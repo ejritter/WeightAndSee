@@ -1,0 +1,1 @@
+﻿public enum BarTypes { Barbell, Dumbbell }

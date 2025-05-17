@@ -1,0 +1,20 @@
+﻿global using CommunityToolkit.Maui;
+global using CommunityToolkit.Maui.Core;
+global using CommunityToolkit.Maui.Core.Platform;
+global using CommunityToolkit.Maui.Markup;
+global using CommunityToolkit.Maui.Views;
+global using CommunityToolkit.Maui.Behaviors;
+global using CommunityToolkit.Mvvm;
+global using CommunityToolkit.Mvvm.ComponentModel;
+global using CommunityToolkit.Mvvm.Input;
+global using Microsoft.Extensions.Logging;
+global using Microsoft.Maui.Controls;
+global using WeightAndSee.Models;
+global using WeightAndSee.Pages;
+global using WeightAndSee.Services;
+global using WeightAndSee.ViewModels;
+global using WeightAndSee.Views;
+global using static CommunityToolkit.Maui.Markup.GridRowsColumns;
+
+global using System.Collections.ObjectModel;
+global using System.Linq;
