@@ -27,18 +27,27 @@
                          .Bind(Label.TextProperty, getter:(GeneralPopupViewModel vm) => vm.Message)
                          .Center()
                          .CenterHorizontal(),
+                    new HorizontalStackLayout()
+                    {
+                        Spacing = 3,
+                        Padding = 3,
+                        Margin = 3,
+                        Children =
+                        {
 
-                    new  Button()
-                        .Text("OK")
-                        .Bind(Button.CommandProperty, getter: (GeneralPopupViewModel vm) => vm.OkayClickedCommand)
-                        .Center()
-                        .Bottom(),
+                            new  Button()
+                                .Text("OK")
+                                .Bind(Button.CommandProperty, getter: (GeneralPopupViewModel vm) => vm.OkayClickedCommand)
+                                .Center()
+                                .Bottom(),
 
-                    new Button()
-                        .Text("Cancel")
-                        .Bind(Button.CommandProperty, getter:(GeneralPopupViewModel vm) => vm.CancelClickedCommand)
-                        .Center()
-                        .Bottom()
+                            new Button()
+                                .Text("Cancel")
+                                .Bind(Button.CommandProperty, getter:(GeneralPopupViewModel vm) => vm.CancelClickedCommand)
+                                .Center()
+                                .Bottom()
+                        }
+                    }.Center()
 
 
                 }

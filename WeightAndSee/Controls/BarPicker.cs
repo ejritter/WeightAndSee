@@ -75,7 +75,7 @@ public class BarPicker : ContentView
                                                   setter:(MainPageViewModel vm, string? barWeightText) => vm.BarWeightText = barWeightText ?? string.Empty),
 
                     new Entry(){ Keyboard = Keyboard.Numeric }
-                        .Placeholder("Lbs to Kg")
+                        .Placeholder("Desired weight")
                         .Column(Column.PickerEntry)
                         .Row(Row.DesiredWeight)
                         .Fill()

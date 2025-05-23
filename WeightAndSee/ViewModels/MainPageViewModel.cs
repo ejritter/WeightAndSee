@@ -107,6 +107,8 @@ public partial class MainPageViewModel : BaseViewModel
                 picker.SelectedItem is BaseModel bt)
         {
             BarType = bt;
+            DesiredWeightText = string.Empty;
+            BarWeightText = string.Empty;
         }
         else
         {
