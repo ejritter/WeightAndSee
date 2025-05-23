@@ -21,10 +21,10 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>MauiMVVMApp</ApplicationTitle>
+		<ApplicationTitle>WeightAndSee</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.mauimvvmapp</ApplicationId>
+		<ApplicationId>com.EJRitterDevelopment.WeightAndSee</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

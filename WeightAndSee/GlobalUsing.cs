@@ -9,6 +9,8 @@ global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Maui.Controls;
+global using Microsoft.Maui.Controls.Shapes;
+global using Microsoft.Maui.Graphics;
 global using WeightAndSee.Models;
 global using WeightAndSee.Pages;
 global using WeightAndSee.Services;
@@ -18,3 +20,4 @@ global using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 global using System.Collections.ObjectModel;
 global using System.Linq;
+global using System.Text;

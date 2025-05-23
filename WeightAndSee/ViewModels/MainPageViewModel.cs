@@ -17,10 +17,23 @@ public partial class MainPageViewModel : BaseViewModel
     private BaseModel _barType = null;
 
     [ObservableProperty]
+    private ContentView _barView = null;
+
+    [ObservableProperty]
     private string _barWeightText = string.Empty;
 
     [ObservableProperty]
     private string _desiredWeightText = string.Empty;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowReport))]
+    [NotifyPropertyChangedFor(nameof(ShowBar))]
+    private string _barReport = string.Empty;
+
+    public bool ShowReport => !string.IsNullOrEmpty(BarReport);
+
+    public bool ShowBar => !string.IsNullOrEmpty(BarReport);
+
     private void LoadAllPlates()
     {
         KiloPlateModels.Clear();
@@ -31,7 +44,9 @@ public partial class MainPageViewModel : BaseViewModel
                                        var kpModel = new KiloPlateModel()
                                        {
                                            KiloPlate = plate.ToString(),
-                                           KiloGram = plate.GetWeightInKg()
+                                           KiloGram = plate.GetWeightInKg(),
+                                           PlateColor = plate.GetWeightColor(),
+                                           PlateSize = plate.GetPlateSize()
                                        };
                                        return kpModel;
                                    })
@@ -48,6 +63,7 @@ public partial class MainPageViewModel : BaseViewModel
     [RelayCommand]
     private async void AddBar()
     {
+        BarReport = string.Empty;
         if (BarWeightText == string.Empty)
         {
             var results = await ShowPopupAsync("Warning!", "Bar Weight cannot be blank", false);
@@ -74,9 +90,12 @@ public partial class MainPageViewModel : BaseViewModel
             return;
         }
 
+        BarType.ResetBar();
         BarType.SetBarType();
         BarType.SetBarWeight(double.Parse(BarWeightText));
         BarType.AddPlatesToBar(double.Parse(DesiredWeightText), KiloPlateModels);
+        BarReport = BarType.BarReport();
+        BarView = BarType.DisplayItem();
 
     }
 
@@ -94,13 +113,4 @@ public partial class MainPageViewModel : BaseViewModel
             BarType = null;
         }
     }
-
-    //public void PickerSet(object? sender, EventArgs e)
-    //{
-    //    if (sender is Picker picker &&
-    //            picker.SelectedItem is BaseModel bt)
-    //    {
-    //        BarType = bt;
-    //    }
-    //}
 }

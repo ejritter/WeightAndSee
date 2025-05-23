@@ -63,17 +63,18 @@ public class BarPicker : ContentView
                         .Column(Column.PickerEntry)
                         .Row(Row.BarInfo),
 
-                    new Entry()
+                    new Entry(){ Keyboard = Keyboard.Numeric }
                         .Placeholder("Bar weight")
                         .Column(Column.BarWeightButton)
                         .Row(Row.BarInfo)
                         .Fill()
                         .Start()
+                         
                         .Bind(Entry.TextProperty, mode:BindingMode.TwoWay,
                                                   getter:(MainPageViewModel vm) => vm.BarWeightText,
                                                   setter:(MainPageViewModel vm, string? barWeightText) => vm.BarWeightText = barWeightText ?? string.Empty),
 
-                    new Entry()
+                    new Entry(){ Keyboard = Keyboard.Numeric }
                         .Placeholder("Lbs to Kg")
                         .Column(Column.PickerEntry)
                         .Row(Row.DesiredWeight)

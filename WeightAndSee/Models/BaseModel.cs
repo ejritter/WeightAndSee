@@ -5,7 +5,7 @@ namespace WeightAndSee.Models;
 public abstract partial class BaseModel : ObservableObject , IWeightConversionService
 {
     [ObservableProperty]
-    private double _barWeight;
+    private double _barWeight; // Assumed to be in pounds
 
     [ObservableProperty]
     private ObservableCollection<KiloPlateModel> _leftPlates = new();
@@ -16,82 +16,179 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
     [ObservableProperty]
     private string _barType = string.Empty;
 
-    public double TotalWeight => KilogramToPound(this);
+    public int TotalWeightInPounds => KilogramToPound(this);
 
-    private const double kgUnit = 2.20462262815;
+    public double TotalWeightInKilograms => PoundToKilogram(this);
 
-    public double KilogramToPound(BaseModel bar)
+    private const double kgUnitToPounds = 2.20462262815; // Factor to convert KG to Pounds
+    private const double poundsToKgUnit = 0.45359237; // Factor to convert Pounds to KG
+
+
+            // Spacing between plates (negative for overlap)
+    protected int _plateSpacing = 4;
+    protected int _plateWidth = 15; // Approximate width of each plate
+            // Add left plates with overlap (right to left)
+    protected int _leftOffset = 50; // Distance from center to first plate
+            // Add right plates with overlap (left to right)
+    protected int _rightOffset = 50; // Distance from center to first plate
+
+    protected int _plateViewTranslationY = 8;
+        protected Line _barLine = new Line()
+        {
+            X1 = 0,
+            Y1 = 0,
+            Y2 = 0,
+            Stroke = Colors.Gray,
+            StrokeThickness = 8,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            TranslationY = -10
+        };
+
+
+    //public abstract ContentView DisplayItem();
+    public double PoundToKilogram(BaseModel bar)
     {
-        //bug here where the bar is getting silly amounts of plates on each side.
-        double output = 0;
-        output = bar.BarWeight * kgUnit;
+        // Convert bar weight (which is in pounds) to kilograms.
+        double totalKilograms = bar.BarWeight * poundsToKgUnit;
 
+        // Add weight of plates (which are already in kilograms).
         foreach (KiloPlateModel leftPlate in bar.LeftPlates)
         {
-            output += leftPlate.KiloGram * kgUnit;
+            totalKilograms += leftPlate.KiloGram;
         }
-
         foreach (KiloPlateModel rightPlate in bar.RightPlates)
         {
-            output += rightPlate.KiloGram * kgUnit;
+            totalKilograms += rightPlate.KiloGram;
+        }
+        return totalKilograms;
+    }
+
+    public int KilogramToPound(BaseModel bar)
+    {
+        double platesInKg = 0;
+        foreach (KiloPlateModel leftPlate in bar.LeftPlates)
+        {
+            platesInKg += leftPlate.KiloGram;
+        }
+        foreach (KiloPlateModel rightPlate in bar.RightPlates)
+        {
+            platesInKg += rightPlate.KiloGram;
         }
 
-        return output;
+        // BarWeight is already in pounds.
+        // Convert total plate weight from KG to pounds and add to bar weight.
+        return (int)(bar.BarWeight + (platesInKg * kgUnitToPounds));
     }
 
-
-    public void AddPlatesToThisBar(BaseModel bar, double weight, ObservableCollection<KiloPlateModel> availableKiloPlates )
+    protected void Plates_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-        var plateIndex = 0;
-        do
+        // Rebuild display when plates are added or removed
+        RefreshDisplay();
+    }
+    protected ContentView _displayView;
+       // Call this method when you want to force a refresh
+       public void ResetBarDisplay()
+    {
+        _displayView = null;
+    }
+    public void RefreshDisplay()
+    {
+        if (_displayView != null)
         {
-            var kiloPlate = availableKiloPlates[plateIndex];//starts at 25kg and goes down.
-            var leftPlate = new KiloPlateModel { KiloPlate = kiloPlate.KiloPlate, KiloGram = kiloPlate.KiloGram };
-            var rightPlate = new KiloPlateModel { KiloPlate = kiloPlate.KiloPlate, KiloGram = kiloPlate.KiloGram };
-            var totalPlateKG = (leftPlate.KiloGram + rightPlate.KiloGram) * kgUnit;
-            if (bar.TotalWeight + totalPlateKG <= weight)
-            {
-                bar.LeftPlates.Add(leftPlate);
-                bar.RightPlates.Add(rightPlate);
-            }
-            else
-            {
-                //go to the next set of plates.
-                plateIndex += 1;
-            }
-            //we've exceeded our available plates.
-            if (plateIndex == availableKiloPlates.Count)
-                break;
-
-
-        } while (bar.TotalWeight <= weight);
-
-        //do
-        //{
-        //    for(int i = 0; i < availableKiloPlates.Count; i ++)
-        //    //foreach (KiloPlateModel kiloPlate in availableKiloPlates)
-        //    {
-        //        var kiloPlate = availableKiloPlates[i];
-        //        var leftPlate = new KiloPlateModel { KiloPlate = kiloPlate.KiloPlate, KiloGram = kiloPlate.KiloGram };
-        //        var rightPlate = new KiloPlateModel { KiloPlate = kiloPlate.KiloPlate, KiloGram = kiloPlate.KiloGram };
-        //        var results = (leftPlate.KiloGram + rightPlate.KiloGram) * kgUnit;
-        //        //I think here we want to do:
-        //        //bar.TotalWeight + results <= weight. Then add the plates.
-        //        //If it's not go to the next set of plates and repeat.
-        //        //do this for all plates and when we reach then end, we know we've maxed out.
-        //        if(bar.TotalWeight + results <= weight)
-        //        {
-        //            bar.LeftPlates.Add(leftPlate);
-        //            bar.RightPlates.Add(rightPlate);
-        //            break;
-        //        }
-        //        else
-        //        {
-        //            continue;
-        //        }
-        //    }
-            
-        //} while (bar.TotalWeight <= weight);
+            _displayView.Content = CreateDisplayContent();
+        }
     }
 
+    public virtual View CreateDisplayContent()
+    {
+        
+        var barLine = new Line()
+        {
+            X1 = _barLine.X1,
+            X2 = _barLine.X2,//this is set on barbellDumbell creation
+            Y1 = _barLine.Y1,
+            Y2 = _barLine.Y2,
+            Stroke = _barLine.Stroke,
+            StrokeThickness = _barLine.StrokeThickness,
+            HorizontalOptions = _barLine.HorizontalOptions,
+            VerticalOptions = _barLine.VerticalOptions,
+            TranslationY = _barLine.TranslationY
+        };
+        var centerPoint = new Border
+        {
+            WidthRequest = 20,
+            HeightRequest = 20,
+            Stroke = Colors.Transparent, // Change to a color for debugging
+            HorizontalOptions = LayoutOptions.Center
+        };
+
+        var grid = new Grid()
+        {
+            RowSpacing = 0,
+            ColumnSpacing = 0,
+            Margin = 0,
+            Padding = 0
+        };
+
+
+        var platesGrid = new Grid()
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Center
+        };
+        // Add the bar line first
+         grid.Add(barLine);
+        
+        // add plates grid that allows overlapping
+         platesGrid.Add(centerPoint);
+        
+
+        for (int i = 0; i < LeftPlates.Count; i++)
+        {
+            var plate = LeftPlates[i];
+            var plateView = plate.DisplayItem();
+            
+            // Position plates from center going left
+            plateView.HorizontalOptions = LayoutOptions.Center;
+            plateView.TranslationX = -(_leftOffset + (i * (_plateWidth + _plateSpacing)));
+            if (plate.KiloGram < 10)
+            {
+                plateView.TranslationY = _plateViewTranslationY;
+            }
+            platesGrid.Add(plateView);
+        }
+        
+
+        for (int i = 0; i < RightPlates.Count; i++)
+        {
+            var plate = RightPlates[i];
+            var plateView = plate.DisplayItem();
+            
+            // Position plates from center going right
+            plateView.HorizontalOptions = LayoutOptions.Center;
+            plateView.TranslationX = _rightOffset + (i * (_plateWidth + _plateSpacing));
+            if (plate.KiloGram < 10)
+            {
+                plateView.TranslationY = _plateViewTranslationY;
+            }
+            platesGrid.Add(plateView);
+        }                 
+        barLine.X2 = ((LeftPlates.Count() * 2) * _plateWidth) + 200;
+        grid.Add(platesGrid);
+        return grid;
+    }
+
+    public ContentView DisplayItem()
+    {
+        if (_displayView == null)
+        {
+            _displayView = new ContentView
+            {
+                Content = CreateDisplayContent()
+            };
+        }
+        
+        return _displayView;
+    }
 }
