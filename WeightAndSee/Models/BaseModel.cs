@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace WeightAndSee.Models;
+﻿namespace WeightAndSee.Models;
 
 public abstract partial class BaseModel : ObservableObject , IWeightConversionService
 {

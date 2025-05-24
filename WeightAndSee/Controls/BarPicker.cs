@@ -1,7 +1,4 @@
-﻿
-
-
-namespace WeightAndSee.Controls;
+﻿namespace WeightAndSee.Controls;
 public class BarPicker : ContentView
 {
     public BarPicker()

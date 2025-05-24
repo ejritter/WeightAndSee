@@ -1,5 +1,4 @@
-﻿
-namespace WeightAndSee.Models;
+﻿namespace WeightAndSee.Models;
 public partial class KiloPlateModel: BaseModel
 {
     public KiloPlateModel()
