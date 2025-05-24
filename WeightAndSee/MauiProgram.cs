@@ -23,8 +23,8 @@ public static class MauiProgram
 
         builder.Services.AddTransientPopup<GeneralPopupPage, GeneralPopupViewModel>();
 
-        builder.Services.AddTransient<MainPageViewModel>();
-        builder.Services.AddTransient<MainPage>();
+        builder.Services.AddSingleton<MainPageViewModel>();
+        builder.Services.AddSingleton<MainPage>();
 
 
 
