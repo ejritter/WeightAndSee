@@ -142,4 +142,91 @@ public static class Extensions
         output.AppendLine($"For a total weight of {bar.TotalWeightInPounds} pounds.");
         return output.ToString();
     }
+
+    public static VerticalStackLayout BarReportView(this BaseModel bar)
+    {
+        VerticalStackLayout output = new()
+        {
+            Margin = 3,
+            Spacing = 3,
+            Padding = 3
+        };
+        var plateCount = 0;
+        var uniquePlates = bar.LeftPlates
+                                .Concat(bar.RightPlates)
+                                .DistinctBy(p => p.KiloPlate);
+        //return vertical stack layout labels.
+        //need one label for the Your Bar Needs:
+        //then each new label from here should change the text color of the KiloGram Plate.
+        //we need to make a horizontalGroup for the labels so something like:
+        //<verticalGroup>
+        //one for each label => <horizontalGroup>
+        //</verticalGroup>
+
+        List<HorizontalStackLayout> plateCountLabels = new();
+        plateCountLabels.Add(new HorizontalStackLayout()
+        {
+               Padding = 3,
+                Margin = 3,
+                Spacing = 3,
+                Children =
+                {
+                    new Label()
+                        .FontSize(22)
+                        .TextColor(Colors.LightSlateGray)
+                        .Text($"Your bar needs:")
+                }
+        });
+
+        foreach (KiloPlateModel plate in uniquePlates)
+        {
+            plateCount += bar.LeftPlates.Where(lp => lp.KiloPlate == plate.KiloPlate)
+                            .Count();
+            plateCount += bar.RightPlates.Where(rp => rp.KiloPlate == plate.KiloPlate)
+                             .Count();
+            var newHorizontalGroup = new HorizontalStackLayout()
+            {
+                Padding = 3,
+                Margin = 3,
+                Spacing = 3,
+                Children =
+                {
+                    new Label()
+                    {
+                        FontSize = 16,
+                        FormattedText = new FormattedString
+                        {
+                            Spans =
+                            {
+                                new Span { Text = $"\t{plateCount}", TextColor = plate.PlateColor},
+                                new Span { Text = " of " , TextColor = Colors.LightSlateGray},
+                                new Span { Text = $"{plate.KiloGram}.", TextColor = plate.PlateColor}
+                            }
+                        }
+                    }
+                }
+            };
+            plateCountLabels.Add(newHorizontalGroup);
+            plateCount = 0;//reset for next plate.
+        }
+        plateCountLabels.Add(new HorizontalStackLayout()
+        {
+               Padding = 3,
+                Margin = 3,
+                Spacing = 3,
+                Children =
+                {
+                    new Label()
+                        .FontSize(22)
+                        .TextColor(Colors.LightSlateGray)
+                        .Text($"For a total weight of {bar.TotalWeightInPounds } pounds.")
+                }
+        });
+        foreach (HorizontalStackLayout stack in plateCountLabels)
+        {
+
+            output.Add(stack);
+        }
+        return output;
+    }
 }

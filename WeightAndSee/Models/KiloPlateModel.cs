@@ -22,8 +22,9 @@ public partial class KiloPlateModel: BaseModel
     {
         return new ContentView()
         {
-            Content = new StackLayout()
+            Content = new VerticalStackLayout()
             {
+                Spacing = 3,
                 Children =
                 {
                     new Line()
@@ -36,6 +37,8 @@ public partial class KiloPlateModel: BaseModel
                     }
                     .Bind(Line.Y2Property,source:this.PlateSize),
                     new Label()
+                        .Center()
+                        .TextColor(Colors.LightSlateGray)
                        .Bind(Label.TextProperty, source:this.KiloGram)
                 }
             }

@@ -16,14 +16,12 @@ public class BarPicker : ContentView
                              new DumbbellModel(){BarType = BarTypes.Dumbbell.ToString()}
                             },
             ItemDisplayBinding = new Binding(nameof(BaseModel.BarType)),
-            Title = "Bar Type"
-        }
-    .Column(Column.PickerEntry)
-    .Row(Row.BarInfo)
-    .Fill()
-    .Start()
-    .Bind(Picker.SelectedItemProperty, getter: (MainPageViewModel vm) => vm.BarType,
-                                       setter: (MainPageViewModel vm, BaseModel bt) => vm.BarType = bt);
+            TitleColor = Colors.DarkGrey,
+            TextColor = Colors.LightSlateGray,
+            Title ="Bar Type:",
+            FontSize = 22,
+            Background = Color.FromArgb("#FAFAFA")
+        };
 
         picker.Behaviors.Add(new EventToCommandBehavior
         {
@@ -37,66 +35,108 @@ public class BarPicker : ContentView
             })
         });
 
+
+        var barWeightEntry = new Entry() 
+        { 
+            Keyboard = Keyboard.Numeric, 
+            FontSize = 22, 
+            PlaceholderColor = Colors.LightSlateGray,
+            TextColor = Colors.LightSlateGray 
+        };
+        barWeightEntry.Behaviors.Add(new EventToCommandBehavior
+        {
+            EventName = nameof(Entry.TextChanged),
+            Command = new Command(() =>
+            {
+                if (this.BindingContext is MainPageViewModel vm)
+                {
+                    // Call the new debounced command
+                    vm.HandleInputChangedCommand.Execute(null);
+                }
+            })
+        });
+
+        var desiredWeightEntry = new Entry() 
+        { 
+          Keyboard = Keyboard.Numeric, 
+          FontSize = 22, 
+          PlaceholderColor = Colors.LightSlateGray,
+          TextColor = Colors.LightSlateGray 
+        };
+        desiredWeightEntry.Behaviors.Add(new EventToCommandBehavior
+        {
+            EventName = nameof(Entry.TextChanged),
+            Command = new Command(() =>
+            {
+                if (this.BindingContext is MainPageViewModel vm)
+                {
+                    // Call the new debounced command
+                    vm.HandleInputChangedCommand.Execute(null);
+                }
+            })
+
+        });
         Content = new ScrollView()
         {
             Content = new Grid()
             {
-                ColumnSpacing = 10,
+                RowSpacing = 5,
                 Padding = 10,
                 Margin = 10,
                 RowDefinitions = Rows.Define(
-                    (Row.BarInfo, 80),
-                    (Row.DesiredWeight, 80)),
+                    (Row.BarType, 80),
+                    (Row.BarWeight, 80),
+                    (Row.DesiredWeight, 80),
+                    (Row.AddPlateButton, 400)),
 
                 ColumnDefinitions = Columns.Define(
-                    (Column.PickerEntry, 80),
-                    (Column.BarWeightButton, 80)),
+                    (Column.UserControls, Star)),
 
                 Children =
                 {
 
-
-                    picker
-                        .Column(Column.PickerEntry)
-                        .Row(Row.BarInfo),
-
-                    new Entry(){ Keyboard = Keyboard.Numeric }
-                        .Placeholder("Bar weight")
-                        .Column(Column.BarWeightButton)
-                        .Row(Row.BarInfo)
-                        .Fill()
-                        .Start()
-                         
+                    picker    
+                    .Column(Column.UserControls)
+                    .Row(Row.BarType)
+                    .Fill()
+                    .Bind(Picker.SelectedItemProperty, getter: (MainPageViewModel vm) => vm.BarType,
+                                                       setter: (MainPageViewModel vm, BaseModel bt) => vm.BarType = bt),
+                    barWeightEntry
+                        .Placeholder(text:"Bar weight in pounds")
+                        .TextColor(Colors.LightSlateGray)
+                        .Column(Column.UserControls)
+                        .Row(Row.BarWeight)
+                        .Fill()                         
                         .Bind(Entry.TextProperty, mode:BindingMode.TwoWay,
                                                   getter:(MainPageViewModel vm) => vm.BarWeightText,
                                                   setter:(MainPageViewModel vm, string? barWeightText) => vm.BarWeightText = barWeightText ?? string.Empty),
 
-                    new Entry(){ Keyboard = Keyboard.Numeric }
-                        .Placeholder("Desired weight")
-                        .Column(Column.PickerEntry)
+                    desiredWeightEntry
+                        .Placeholder("Desired weight in pounds")
+                        .Column(Column.UserControls)
                         .Row(Row.DesiredWeight)
                         .Fill()
-                        .Start()
                         .Bind(Entry.TextProperty, mode:BindingMode.TwoWay,
                                                   getter:(MainPageViewModel vm) => vm.DesiredWeightText,
                                                   setter:(MainPageViewModel vm, string? desiredWeightText) => vm.DesiredWeightText = desiredWeightText ?? string.Empty),
 
                     new ImageButton()
                     {
-                        Source = "ic_fluent_add_48_filled.svg"
+                        Source = "add_plate_icon.svg"
                     }
-                    .Column(Column.BarWeightButton)
-                    .Row(Row.DesiredWeight)
+                    .Column(Column.UserControls)
+                    .Row(Row.AddPlateButton)
                     .Fill()
-                    .Start()
+                    .Height(250)
+                    .Width(250)
                     .Bind(ImageButton.CommandProperty, getter:(MainPageViewModel vm) => vm.AddBarCommand)
+                    .Bind(ImageButton.IsVisibleProperty, getter:(MainPageViewModel vm) => vm.CanSubmit)
 
                 }
 
             }.Top().Center()
         };
     }
-
-    private enum Row { BarInfo, DesiredWeight }
-    private enum Column { PickerEntry, BarWeightButton }
+    private enum Row { BarType, BarWeight, DesiredWeight, AddPlateButton }
+    private enum Column { UserControls }
 }

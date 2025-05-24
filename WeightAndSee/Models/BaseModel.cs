@@ -21,16 +21,14 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
     private const double kgUnitToPounds = 2.20462262815; // Factor to convert KG to Pounds
     private const double poundsToKgUnit = 0.45359237; // Factor to convert Pounds to KG
 
-
-            // Spacing between plates (negative for overlap)
-    protected int _plateSpacing = 4;
+    protected int _plateSpacing = 10; // Spacing between plates (negative for overlap)
     protected int _plateWidth = 15; // Approximate width of each plate
             // Add left plates with overlap (right to left)
     protected int _leftOffset = 50; // Distance from center to first plate
             // Add right plates with overlap (left to right)
     protected int _rightOffset = 50; // Distance from center to first plate
 
-    protected int _plateViewTranslationY = 8;
+    protected int _plateViewTranslationY = 8;// little plates need to be shifted down to center on bar.
         protected Line _barLine = new Line()
         {
             X1 = 0,
@@ -133,7 +131,11 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
         var platesGrid = new Grid()
         {
             HorizontalOptions = LayoutOptions.Fill,
-            VerticalOptions = LayoutOptions.Center
+            VerticalOptions = LayoutOptions.Center,
+            Padding = 2,
+            Margin = 2,
+            ColumnSpacing = 5
+
         };
         // Add the bar line first
          grid.Add(barLine);
