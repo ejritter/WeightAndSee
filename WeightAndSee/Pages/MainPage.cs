@@ -4,12 +4,12 @@ public class MainPage : BasePage<MainPageViewModel>
     public MainPage(MainPageViewModel vm) : base(vm)
     {
         Build();
-        this.Background = Colors.White;
         
     }
 
     protected override void Build()
     {
+        this.Background = Colors.White;
         this.Content = new ScrollView()
         {
             Margin = 5,
@@ -22,6 +22,9 @@ public class MainPage : BasePage<MainPageViewModel>
                 Padding = 5,
                 Children =
                 {
+                    new PlatePicker()
+                        .Center()
+                        .Background(Color.FromArgb("#FAFAFA")),
                     new BarPicker()
                         .Center()
                         .Background(Color.FromArgb("#FAFAFA")),

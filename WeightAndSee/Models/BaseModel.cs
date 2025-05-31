@@ -42,7 +42,7 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
         };
 
 
-    //public abstract ContentView DisplayItem();
+    //public abstract ContentView CreateItemForDisplay();
     public double PoundToKilogram(BaseModel bar)
     {
         // Convert bar weight (which is in pounds) to kilograms.
@@ -147,7 +147,7 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
         for (int i = 0; i < LeftPlates.Count; i++)
         {
             var plate = LeftPlates[i];
-            var plateView = plate.DisplayItem();
+            var plateView = plate.DisplayItem;
             
             // Position plates from center going left
             plateView.HorizontalOptions = LayoutOptions.Center;
@@ -163,7 +163,7 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
         for (int i = 0; i < RightPlates.Count; i++)
         {
             var plate = RightPlates[i];
-            var plateView = plate.DisplayItem();
+            var plateView = plate.DisplayItem;
             
             // Position plates from center going right
             plateView.HorizontalOptions = LayoutOptions.Center;
@@ -178,8 +178,8 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
         grid.Add(platesGrid);
         return grid;
     }
-
-    public ContentView DisplayItem()
+    public ContentView DisplayItem => CreateItemForDisplay();
+    public ContentView CreateItemForDisplay()
     {
         if (_displayView == null)
         {

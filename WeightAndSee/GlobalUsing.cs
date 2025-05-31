@@ -13,6 +13,7 @@ global using WeightAndSee.Models;
 global using WeightAndSee.Pages;
 global using WeightAndSee.Services;
 global using WeightAndSee.ViewModels;
+global using WeightAndSee.Views;
 global using WeightAndSee.Controls;
 global using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 

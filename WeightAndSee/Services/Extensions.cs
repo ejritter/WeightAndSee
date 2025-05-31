@@ -39,13 +39,13 @@ public static class Extensions
     {
         return plate switch
         {
-            KiloPlates.Kg_0_25 => Colors.Grey,
-            KiloPlates.Kg_0_5 => Colors.Peru, // bronze
-            KiloPlates.Kg_1_0 => Colors.Green,
-            KiloPlates.Kg_1_25 => Colors.Black,
-            KiloPlates.Kg_1_5 => Colors.Yellow,
-            KiloPlates.Kg_2_0 => Colors.Blue,
-            KiloPlates.Kg_2_5 => Colors.Red,
+            KiloPlates.Kg_0_25 => Colors.Silver,
+            KiloPlates.Kg_0_5 => Colors.Silver,
+            KiloPlates.Kg_1_0 => Colors.Silver,
+            KiloPlates.Kg_1_25 => Colors.Silver,
+            KiloPlates.Kg_1_5 => Colors.Silver,
+            KiloPlates.Kg_2_0 => Colors.Silver,
+            KiloPlates.Kg_2_5 => Colors.Black,
             KiloPlates.Kg_5_0 => Colors.White,
             KiloPlates.Kg_10_0 => Colors.Green,
             KiloPlates.Kg_15_0 => Colors.Yellow,
@@ -79,7 +79,8 @@ public static class Extensions
             var currentPlate = availableKiloplates[plateIndex];
             var totalPlateWeightInPounds = (currentPlate.KiloGram * 2) * kgUnitToPound;
             
-            if (((int)totalPlateWeightInPounds + bar.TotalWeightInPounds) <= weight)
+            if (((int)totalPlateWeightInPounds + bar.TotalWeightInPounds) <= weight &&
+                    currentPlate.IsAvailable)
             {
                 bar.LeftPlates.Add(new KiloPlateModel()
                 {

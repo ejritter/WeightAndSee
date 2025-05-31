@@ -1,5 +1,7 @@
 ﻿
 
+using CommunityToolkit.Maui.Core.Platform;
+
 namespace WeightAndSee.ViewModels;
 public partial class MainPageViewModel : BaseViewModel
 {
@@ -10,6 +12,9 @@ public partial class MainPageViewModel : BaseViewModel
 
     [ObservableProperty]
     private ObservableCollection<KiloPlateModel> _kiloPlateModels = new();
+
+    [ObservableProperty]
+    private ObservableCollection<object> _selectedPlates = new();
 
     [ObservableProperty]
     private BaseModel _barType = null;
@@ -38,11 +43,12 @@ public partial class MainPageViewModel : BaseViewModel
     public bool ShowBar => !string.IsNullOrEmpty(BarReport);
 
     private CancellationTokenSource? _debounceCts;
-    private const int DebounceDelayMilliseconds = 300; // Adjust delay as needed
+    private const int DebounceDelayMilliseconds = 1500; // Adjust delay as needed
 
     private void LoadAllPlates()
     {
         KiloPlateModels.Clear();
+        SelectedPlates.Clear();
         var kiloPlateModels = Enum.GetValues(typeof(KiloPlates))
                                    .Cast<KiloPlates>()
                                    .Select(plate =>
@@ -62,6 +68,7 @@ public partial class MainPageViewModel : BaseViewModel
         foreach (KiloPlateModel plateModel in kiloPlateModels)
         {
             KiloPlateModels.Add(plateModel);
+            SelectedPlates.Add(plateModel);
         }
     }
 
@@ -73,7 +80,7 @@ public partial class MainPageViewModel : BaseViewModel
 
     // New command to be called by EventToCommandBehavior from TextChanged event
     [RelayCommand]
-    private async Task HandleInputChanged()
+    private async Task HandleInputChanged(object? sender)
     {
         _debounceCts?.Cancel(); // Cancel the previous debounce task
         _debounceCts?.Dispose();
@@ -83,6 +90,10 @@ public partial class MainPageViewModel : BaseViewModel
         {
             await Task.Delay(DebounceDelayMilliseconds, _debounceCts.Token);
             // After the delay, perform the actual check
+            if (sender is Entry entry)
+            {
+               await entry.HideKeyboardAsync();
+            }
             PerformCanSubmitCheck();
         }
         catch (TaskCanceledException)
@@ -127,7 +138,8 @@ public partial class MainPageViewModel : BaseViewModel
         BarType.AddPlatesToBar(double.Parse(DesiredWeightText), KiloPlateModels);
         BarReport = BarType.BarReport();
         BarReportView = BarType.BarReportView();
-        BarView = BarType.DisplayItem();
+        BarView = BarType.DisplayItem;
+        new Entry().HideKeyboardAsync();
     }
 
     [RelayCommand]
@@ -146,5 +158,16 @@ public partial class MainPageViewModel : BaseViewModel
         }
         // Update CanSubmit immediately as this is a discrete action
         PerformCanSubmitCheck();
+    }
+
+    [RelayCommand]
+    private void EnableOrDisablePlate(object? sender)
+    {
+         var currentlySelectedInVM = new HashSet<KiloPlateModel>(this.SelectedPlates.Cast<KiloPlateModel>());
+         foreach (KiloPlateModel plate in KiloPlateModels)
+         {
+             plate.IsAvailable = currentlySelectedInVM.Contains(plate);
+             
+         }
     }
 }

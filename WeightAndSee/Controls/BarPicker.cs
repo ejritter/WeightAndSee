@@ -18,7 +18,7 @@ public class BarPicker : ContentView
             ItemDisplayBinding = new Binding(nameof(BaseModel.BarType)),
             TitleColor = Colors.DarkGrey,
             TextColor = Colors.LightSlateGray,
-            Title ="Bar Type:",
+            Title = "Bar Type:",
             FontSize = 22,
             Background = Color.FromArgb("#FAFAFA")
         };
@@ -51,7 +51,7 @@ public class BarPicker : ContentView
                 if (this.BindingContext is MainPageViewModel vm)
                 {
                     // Call the new debounced command
-                    vm.HandleInputChangedCommand.Execute(null);
+                    vm.HandleInputChangedCommand.Execute(barWeightEntry);
                 }
             })
         });
@@ -71,7 +71,7 @@ public class BarPicker : ContentView
                 if (this.BindingContext is MainPageViewModel vm)
                 {
                     // Call the new debounced command
-                    vm.HandleInputChangedCommand.Execute(null);
+                    vm.HandleInputChangedCommand.Execute(desiredWeightEntry);
                 }
             })
 
@@ -87,7 +87,7 @@ public class BarPicker : ContentView
                     (Row.BarType, 80),
                     (Row.BarWeight, 80),
                     (Row.DesiredWeight, 80),
-                    (Row.AddPlateButton, 400)),
+                    (Row.AddPlateButton, 250)),
 
                 ColumnDefinitions = Columns.Define(
                     (Column.UserControls, Star)),
@@ -112,7 +112,7 @@ public class BarPicker : ContentView
                                                   setter:(MainPageViewModel vm, string? barWeightText) => vm.BarWeightText = barWeightText ?? string.Empty),
 
                     desiredWeightEntry
-                        .Placeholder("Desired weight in pounds")
+                        .Placeholder(text:"Desired weight in pounds")
                         .Column(Column.UserControls)
                         .Row(Row.DesiredWeight)
                         .Fill()
@@ -122,16 +122,13 @@ public class BarPicker : ContentView
 
                     new ImageButton()
                     {
-                        Source = "add_plate_icon.svg"
+                        Source = "add_plate_icon.png"
                     }
                     .Column(Column.UserControls)
                     .Row(Row.AddPlateButton)
                     .Fill()
-                    .Height(250)
-                    .Width(250)
                     .Bind(ImageButton.CommandProperty, getter:(MainPageViewModel vm) => vm.AddBarCommand)
                     .Bind(ImageButton.IsVisibleProperty, getter:(MainPageViewModel vm) => vm.CanSubmit)
-
                 }
 
             }.Top().Center()

@@ -1,4 +1,6 @@
-﻿namespace WeightAndSee.Models;
+﻿using Microsoft.Maui.Controls.Shapes;
+
+namespace WeightAndSee.Models;
 public partial class KiloPlateModel: BaseModel
 {
     public KiloPlateModel()
@@ -17,31 +19,58 @@ public partial class KiloPlateModel: BaseModel
 
     [ObservableProperty]
     private double _plateSize;
-    
-    public override View CreateDisplayContent()
+
+    [ObservableProperty]
+    private bool _isAvailable = true;
+
+    public override ContentView CreateDisplayContent()
+{
+    // Create a contrasting border color
+    Color borderColor = PlateColor == Colors.White || PlateColor.GetLuminosity() > 0.8 ? 
+        Colors.Black : Colors.Transparent;
+
+    return new ContentView()
     {
-        return new ContentView()
+        Content = new VerticalStackLayout()
         {
-            Content = new VerticalStackLayout()
+            new Border
             {
-                Spacing = 3,
-                Children =
+                Stroke = borderColor,
+                StrokeThickness = 1,
+                StrokeShape = new RoundRectangle { CornerRadius = 2 },
+                Padding = 2,
+                Content = new VerticalStackLayout()
                 {
-                    new Line()
+                    Spacing = 3,
+                    Children =
                     {
-                        X1 = 0,
-                        X2 = 0,
-                        Y1 = 0,
-                        Stroke = PlateColor,
-                        StrokeThickness = 8
+                        new Line()
+                        {
+                            X1 = 0,
+                            X2 = 0,
+                            Y1 = 0,
+                            Stroke = PlateColor,
+                            StrokeThickness = 8
+                        }
+                        .Bind(Line.Y2Property,source:this.PlateSize)
                     }
-                    .Bind(Line.Y2Property,source:this.PlateSize),
-                    new Label()
-                        .Center()
-                        .TextColor(Colors.LightSlateGray)
-                       .Bind(Label.TextProperty, source:this.KiloGram)
                 }
-            }
-        };
-    }
+            },
+
+            new Label()
+                .Text(KiloGram.ToString())
+                .Invoke(label =>
+                {
+                    if(this.PlateColor == Colors.White)
+                    {
+                        label.TextColor = Colors.Black;
+                    }
+                    else
+                    {
+                        label.TextColor = PlateColor;
+                    }
+                })
+        }
+    };
+}
 }
