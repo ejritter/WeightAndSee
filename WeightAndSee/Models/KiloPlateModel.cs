@@ -26,8 +26,9 @@ public partial class KiloPlateModel: BaseModel
     public override ContentView CreateDisplayContent()
 {
     // Create a contrasting border color
-    Color borderColor = PlateColor == Colors.White || PlateColor.GetLuminosity() > 0.8 ? 
-        Colors.Black : Colors.Transparent;
+    Color borderColor = PlateColor == Colors.White || PlateColor == Colors.Yellow 
+            || PlateColor.GetLuminosity() > 0.8 ? 
+                Colors.Black : Colors.Transparent;
 
     return new ContentView()
     {
@@ -61,7 +62,7 @@ public partial class KiloPlateModel: BaseModel
                 .Text(KiloGram.ToString())
                 .Invoke(label =>
                 {
-                    if(this.PlateColor == Colors.White)
+                    if(this.PlateColor == Colors.White || this.PlateColor == Colors.Yellow)
                     {
                         label.TextColor = Colors.Black;
                     }

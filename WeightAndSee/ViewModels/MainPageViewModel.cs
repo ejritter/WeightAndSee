@@ -29,6 +29,9 @@ public partial class MainPageViewModel : BaseViewModel
     private string _desiredWeightText = string.Empty;
 
     [ObservableProperty]
+    private ObservableCollection<KiloPlateModel> _platesAvailableToYou = new();
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowReport))]
     [NotifyPropertyChangedFor(nameof(ShowBar))]
     private string _barReport = string.Empty;
@@ -48,7 +51,7 @@ public partial class MainPageViewModel : BaseViewModel
     private void LoadAllPlates()
     {
         KiloPlateModels.Clear();
-        SelectedPlates.Clear();
+        PlatesAvailableToYou.Clear();
         var kiloPlateModels = Enum.GetValues(typeof(KiloPlates))
                                    .Cast<KiloPlates>()
                                    .Select(plate =>
@@ -62,13 +65,13 @@ public partial class MainPageViewModel : BaseViewModel
                                        };
                                        return kpModel;
                                    })
-                                   .OrderByDescending(kp => kp.KiloGram )
+                                   .OrderByDescending(kp => kp.KiloGram)
                                    .ToList();
 
         foreach (KiloPlateModel plateModel in kiloPlateModels)
         {
             KiloPlateModels.Add(plateModel);
-            SelectedPlates.Add(plateModel);
+            PlatesAvailableToYou.Add(plateModel.ClonePlate());
         }
     }
 
@@ -92,7 +95,7 @@ public partial class MainPageViewModel : BaseViewModel
             // After the delay, perform the actual check
             if (sender is Entry entry)
             {
-               await entry.HideKeyboardAsync();
+                await entry.HideKeyboardAsync();
             }
             PerformCanSubmitCheck();
         }
@@ -101,7 +104,7 @@ public partial class MainPageViewModel : BaseViewModel
             // This is expected if typing continues and cancels the delay
         }
     }
-    
+
     [RelayCommand]
     private async void AddBar()
     {
@@ -135,7 +138,7 @@ public partial class MainPageViewModel : BaseViewModel
         BarType.ResetBar();
         BarType.SetBarType();
         BarType.SetBarWeight(double.Parse(BarWeightText));
-        BarType.AddPlatesToBar(double.Parse(DesiredWeightText), KiloPlateModels);
+        BarType.AddPlatesToBar(double.Parse(DesiredWeightText), PlatesAvailableToYou);
         BarReport = BarType.BarReport();
         BarReportView = BarType.BarReportView();
         BarView = BarType.DisplayItem;
@@ -156,18 +159,65 @@ public partial class MainPageViewModel : BaseViewModel
         {
             BarType = null;
         }
-        // Update CanSubmit immediately as this is a discrete action
         PerformCanSubmitCheck();
     }
 
     [RelayCommand]
-    private void EnableOrDisablePlate(object? sender)
+    private void SetPlateToAvailable(object? sender)
     {
-         var currentlySelectedInVM = new HashSet<KiloPlateModel>(this.SelectedPlates.Cast<KiloPlateModel>());
-         foreach (KiloPlateModel plate in KiloPlateModels)
-         {
-             plate.IsAvailable = currentlySelectedInVM.Contains(plate);
-             
-         }
+        if (sender is CollectionView cv && cv.SelectedItem is KiloPlateModel kp)
+        {
+            cv.SelectedItem = null;
+            var found = PlatesAvailableToYou.FirstOrDefault(pa => pa.KiloGram == kp.KiloGram);
+            if (found is not null)
+            {
+                _ = ShowPopupAsync(title: "Heads up!", message: $"plate {kp.KiloGram} already available.", isDismissable: true);
+                return;
+            }
+            else
+            {
+                //if the plate is 25 make it first or 0.25 make it last
+                if (kp.KiloGram == 25)
+                {
+                    PlatesAvailableToYou.Insert(0, kp.ClonePlate());
+                }
+                else if (kp.KiloGram == 0.25)
+                {
+                    PlatesAvailableToYou.Insert(PlatesAvailableToYou.Count, kp.ClonePlate());
+                }
+                else
+                {
+                    var currentPlates = PlatesAvailableToYou.ToList();
+                    foreach (KiloPlateModel currentPlate in currentPlates)
+                    {
+                        if (kp.KiloGram > currentPlate.KiloGram)
+                        {
+                            PlatesAvailableToYou.Insert(PlatesAvailableToYou.IndexOf(currentPlate), kp.ClonePlate());
+                            break;
+                        }
+                    }
+                }
+                _ = ShowPopupAsync(title: "Heads up!", message: $"Plate {kp.KiloGram} added.", isDismissable: true);
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void SetPlateToUnavailable(object? sender)
+    {
+        if (sender is CollectionView cv && cv.SelectedItem is KiloPlateModel kp)
+        {
+            cv.SelectedItem = null;
+            var found = PlatesAvailableToYou.FirstOrDefault(pa => pa.KiloGram == kp.KiloGram);
+            if (found is not null)
+            {
+                PlatesAvailableToYou.Remove(found);
+                _ = ShowPopupAsync(title: "Heads up!", message: $"Plate {kp.KiloGram} removed.", isDismissable: true);
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }

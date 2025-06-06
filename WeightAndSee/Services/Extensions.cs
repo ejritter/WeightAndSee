@@ -26,11 +26,11 @@ public static class Extensions
 
     public static double GetPlateSize(this KiloPlates plate)
     {
-       if (plate.GetWeightInKg() > 9)
+        if (plate.GetWeightInKg() > 9)
         {
             return 50;
         }
-       else
+        else
         {
             return 30;
         }
@@ -71,6 +71,19 @@ public static class Extensions
         }
     }
 
+    public static KiloPlateModel ClonePlate(this KiloPlateModel kp)
+    {
+        var output = new KiloPlateModel
+        {
+            KiloGram = kp.KiloGram,
+            KiloPlate = kp.KiloPlate,
+            PlateColor = kp.PlateColor,
+            PlateSize = kp.PlateSize,
+            IsAvailable = kp.IsAvailable
+        };
+
+        return output;
+    }
     public static void AddPlatesToBar(this BaseModel bar, double weight, ObservableCollection<KiloPlateModel> availableKiloplates)
     {
         var plateIndex = 0;
@@ -78,7 +91,7 @@ public static class Extensions
         {
             var currentPlate = availableKiloplates[plateIndex];
             var totalPlateWeightInPounds = (currentPlate.KiloGram * 2) * kgUnitToPound;
-            
+
             if (((int)totalPlateWeightInPounds + bar.TotalWeightInPounds) <= weight &&
                     currentPlate.IsAvailable)
             {
@@ -98,7 +111,7 @@ public static class Extensions
                     PlateSize = currentPlate.PlateSize
                 });
             }
-            else if(plateIndex != availableKiloplates.Count -1)
+            else if (plateIndex != availableKiloplates.Count - 1)
             {
                 plateIndex += 1;
             }
@@ -167,10 +180,10 @@ public static class Extensions
         List<HorizontalStackLayout> plateCountLabels = new();
         plateCountLabels.Add(new HorizontalStackLayout()
         {
-               Padding = 3,
-                Margin = 3,
-                Spacing = 3,
-                Children =
+            Padding = 3,
+            Margin = 3,
+            Spacing = 3,
+            Children =
                 {
                     new Label()
                         .FontSize(22)
@@ -185,44 +198,58 @@ public static class Extensions
                             .Count();
             plateCount += bar.RightPlates.Where(rp => rp.KiloPlate == plate.KiloPlate)
                              .Count();
+
+            var plateDetailLabel = new Label()
+            {
+                FontSize = 16,
+                FormattedText = new FormattedString
+                {
+                     Spans =
+                     {
+                         new Span { Text = $"\t{plateCount}", TextColor = plate.PlateColor},
+                         new Span { Text = " of " , TextColor = Colors.LightSlateGray},
+                         new Span { Text = $"{plate.KiloGram}.", TextColor = plate.PlateColor}
+                     }
+                }
+            };
+
+            if (plate.PlateColor == Colors.White || plate.PlateColor == Colors.Yellow)
+            {
+                plateDetailLabel.Shadow = new Shadow
+                {
+                    Brush = Colors.Black,
+                    Offset = new Point(0, 0), // Centered shadow creates a glow/outline effect
+                    Radius = 1.5f,            // Adjust for desired border thickness/softness
+                    Opacity = 1.0f            // Fully opaque shadow
+                };
+            }
+        
             var newHorizontalGroup = new HorizontalStackLayout()
             {
                 Padding = 3,
                 Margin = 3,
                 Spacing = 3,
                 Children =
-                {
-                    new Label()
                     {
-                        FontSize = 16,
-                        FormattedText = new FormattedString
-                        {
-                            Spans =
-                            {
-                                new Span { Text = $"\t{plateCount}", TextColor = plate.PlateColor},
-                                new Span { Text = " of " , TextColor = Colors.LightSlateGray},
-                                new Span { Text = $"{plate.KiloGram}.", TextColor = plate.PlateColor}
-                            }
-                        }
+                        plateDetailLabel
                     }
-                }
             };
             plateCountLabels.Add(newHorizontalGroup);
             plateCount = 0;//reset for next plate.
-        }
-        plateCountLabels.Add(new HorizontalStackLayout()
-        {
-               Padding = 3,
+    }
+    plateCountLabels.Add(new HorizontalStackLayout()
+    {
+        Padding = 3,
                 Margin = 3,
                 Spacing = 3,
                 Children =
                 {
-                    new Label()
-                        .FontSize(22)
-                        .TextColor(Colors.LightSlateGray)
-                        .Text($"For a total weight of {bar.TotalWeightInPounds } pounds.")
+            new Label()
+                .FontSize(22)
+                .TextColor(Colors.LightSlateGray)
+                .Text($"For a total weight of {bar.TotalWeightInPounds} pounds.")
                 }
-        });
+    });
         foreach (HorizontalStackLayout stack in plateCountLabels)
         {
 
