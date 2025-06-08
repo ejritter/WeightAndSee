@@ -1,6 +1,6 @@
 ﻿
 
-using CommunityToolkit.Maui.Core.Platform;
+
 
 namespace WeightAndSee.ViewModels;
 public partial class MainPageViewModel : BaseViewModel
@@ -24,10 +24,8 @@ public partial class MainPageViewModel : BaseViewModel
 
     [ObservableProperty]
     private string _barWeightText = string.Empty;
-
     [ObservableProperty]
     private string _desiredWeightText = string.Empty;
-
     [ObservableProperty]
     private ObservableCollection<KiloPlateModel> _platesAvailableToYou = new();
 
@@ -36,7 +34,8 @@ public partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(ShowBar))]
     private string _barReport = string.Empty;
 
-    [ObservableProperty]
+
+
     private bool _canSubmit = false;
 
     [ObservableProperty]
@@ -75,35 +74,8 @@ public partial class MainPageViewModel : BaseViewModel
         }
     }
 
-    // This method contains the core logic to update CanSubmit
-    private void PerformCanSubmitCheck()
-    {
-        CanSubmit = !string.IsNullOrEmpty(BarWeightText) && !string.IsNullOrEmpty(DesiredWeightText);
-    }
 
-    // New command to be called by EventToCommandBehavior from TextChanged event
-    [RelayCommand]
-    private async Task HandleInputChanged(object? sender)
-    {
-        _debounceCts?.Cancel(); // Cancel the previous debounce task
-        _debounceCts?.Dispose();
-        _debounceCts = new CancellationTokenSource();
-
-        try
-        {
-            await Task.Delay(DebounceDelayMilliseconds, _debounceCts.Token);
-            // After the delay, perform the actual check
-            if (sender is Entry entry)
-            {
-                await entry.HideKeyboardAsync();
-            }
-            PerformCanSubmitCheck();
-        }
-        catch (TaskCanceledException)
-        {
-            // This is expected if typing continues and cancels the delay
-        }
-    }
+  
 
     [RelayCommand]
     private async void AddBar()
@@ -111,27 +83,27 @@ public partial class MainPageViewModel : BaseViewModel
         BarReport = string.Empty;
         if (BarWeightText == string.Empty)
         {
-            var results = await ShowPopupAsync("Warning!", "Bar Weight cannot be blank", false);
+            _ = await ShowPopupAsync("Warning!", "Bar Weight cannot be blank", false);
             return;
         }
         if (double.TryParse(BarWeightText, out _) == false)
         {
-            var results = await ShowPopupAsync("Warning!", "Bar Weight must be a valid number", false);
+            _ = await ShowPopupAsync("Warning!", "Bar Weight must be a valid number", false);
             return;
         }
         if (DesiredWeightText == string.Empty)
         {
-            var results = await ShowPopupAsync("Warning!", "Desired Weight cannot be blank", false);
+            _ = await ShowPopupAsync("Warning!", "Desired Weight cannot be blank", false);
             return;
         }
         if (double.TryParse(DesiredWeightText, out _) == false)
         {
-            var results = await ShowPopupAsync("Warning!", "Desired Weight must be a valid number", false);
+            _ = await ShowPopupAsync("Warning!", "Desired Weight must be a valid number", false);
             return;
         }
         if (BarType is null)
         {
-            var results = await ShowPopupAsync("Warning!", "Bar Type must be selected", false);
+            _ = await ShowPopupAsync("Warning!", "Bar Type must be selected", false);
             return;
         }
 
@@ -159,7 +131,6 @@ public partial class MainPageViewModel : BaseViewModel
         {
             BarType = null;
         }
-        PerformCanSubmitCheck();
     }
 
     [RelayCommand]

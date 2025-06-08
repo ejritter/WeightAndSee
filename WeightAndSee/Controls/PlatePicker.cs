@@ -19,7 +19,7 @@ public class PlatePicker : ContentView
                 Children =
                 {
                     new Label()
-                        .Text("All plates available.")
+                        .Text("Plate Store.")
                         .TextColor(Colors.Black),
                     new HorizontalStackLayout()
                     {
@@ -45,7 +45,7 @@ public class PlatePicker : ContentView
                         }
                     },
                      new Label()
-                        .Text("Tap plate below if it's not available to you. Tap that plate from above to re-add it. Plates removed from below will not be used on the bar.")
+                        .Text($"Plates Available to you.\nIf you don't have access to a plate, tap it here and it will be removed.\nTap it in the plate store to add it back.")
                         .TextColor(Colors.Black),
                     new HorizontalStackLayout()
                     {

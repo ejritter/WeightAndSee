@@ -1,5 +1,6 @@
 ﻿global using CommunityToolkit.Maui;
 global using CommunityToolkit.Maui.Core;
+global using CommunityToolkit.Maui.Core.Platform;
 global using CommunityToolkit.Maui.Markup;
 global using CommunityToolkit.Maui.Views;
 global using CommunityToolkit.Maui.Behaviors;

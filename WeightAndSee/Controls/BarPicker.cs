@@ -43,18 +43,7 @@ public class BarPicker : ContentView
             PlaceholderColor = Colors.LightSlateGray,
             TextColor = Colors.LightSlateGray 
         };
-        barWeightEntry.Behaviors.Add(new EventToCommandBehavior
-        {
-            EventName = nameof(Entry.TextChanged),
-            Command = new Command(() =>
-            {
-                if (this.BindingContext is MainPageViewModel vm)
-                {
-                    // Call the new debounced command
-                    vm.HandleInputChangedCommand.Execute(barWeightEntry);
-                }
-            })
-        });
+
 
         var desiredWeightEntry = new Entry() 
         { 
@@ -63,31 +52,20 @@ public class BarPicker : ContentView
           PlaceholderColor = Colors.LightSlateGray,
           TextColor = Colors.LightSlateGray 
         };
-        desiredWeightEntry.Behaviors.Add(new EventToCommandBehavior
-        {
-            EventName = nameof(Entry.TextChanged),
-            Command = new Command(() =>
-            {
-                if (this.BindingContext is MainPageViewModel vm)
-                {
-                    // Call the new debounced command
-                    vm.HandleInputChangedCommand.Execute(desiredWeightEntry);
-                }
-            })
 
-        });
         Content = new ScrollView()
         {
             Content = new Grid()
             {
-                RowSpacing = 5,
+                RowSpacing = 6,
+                ColumnSpacing = 6,
                 Padding = 10,
                 Margin = 10,
                 RowDefinitions = Rows.Define(
                     (Row.BarType, 80),
                     (Row.BarWeight, 80),
                     (Row.DesiredWeight, 80),
-                    (Row.AddPlateButton, 250)),
+                    (Row.AddPlateButton, 260)),
 
                 ColumnDefinitions = Columns.Define(
                     (Column.UserControls, Star)),
@@ -122,13 +100,11 @@ public class BarPicker : ContentView
 
                     new ImageButton()
                     {
-                        Source = "add_plate_icon.png"
+                        Source = "add_plate_icon.svg"
                     }
                     .Column(Column.UserControls)
                     .Row(Row.AddPlateButton)
-                    .Fill()
                     .Bind(ImageButton.CommandProperty, getter:(MainPageViewModel vm) => vm.AddBarCommand)
-                    .Bind(ImageButton.IsVisibleProperty, getter:(MainPageViewModel vm) => vm.CanSubmit)
                 }
 
             }.Top().Center()

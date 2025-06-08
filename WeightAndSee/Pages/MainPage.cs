@@ -4,7 +4,6 @@ public class MainPage : BasePage<MainPageViewModel>
     public MainPage(MainPageViewModel vm) : base(vm)
     {
         Build();
-        
     }
 
     protected override void Build()
