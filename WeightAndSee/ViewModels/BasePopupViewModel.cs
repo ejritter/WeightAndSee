@@ -1,23 +1,29 @@
 ﻿namespace WeightAndSee.ViewModels;
-
-public abstract partial class BasePopupViewModel : ObservableObject
+public abstract partial class BasePopupViewModel(IPopupService popupService) : ObservableObject, IQueryAttributable
 {
-    public BasePopupViewModel()
-    {
+    protected readonly IPopupService PopupService = popupService;
 
+
+    [ObservableProperty]
+    private string _title = string.Empty;
+
+    [ObservableProperty]
+    private string _message = string.Empty;
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        Title = (string)query[nameof(BasePopupViewModel.Title)];
+        Message = (string)query[nameof(BasePopupViewModel.Message)];
     }
 
-    public event EventHandler<bool>? ClosePopup;
-
     [RelayCommand]
-    protected void OkayClicked()
+    private async Task OkayClicked()
     {
-        ClosePopup?.Invoke(this, true);
+        await PopupService.ClosePopupAsync(Shell.Current, true);
     }
 
     [RelayCommand]
-    protected void CancelClicked()
+    private async Task CancelClicked()
     {
-        ClosePopup?.Invoke(this, false);
+        await PopupService.ClosePopupAsync(Shell.Current, false);
     }
 }

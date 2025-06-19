@@ -21,11 +21,12 @@ public static class MauiProgram
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<App>();
 
-        builder.Services.AddTransientPopup<GeneralPopupPage, GeneralPopupViewModel>();
-
         builder.Services.AddSingleton<MainPageViewModel>();
         builder.Services.AddSingleton<MainPage>();
 
+        builder.Services.AddTransientPopup<GeneralPopupPage, GeneralPopupViewModel>();
+
+        //popupservice is baked in DI, don't need to add anything for it in the builder.
         return builder.Build();
     }
 }

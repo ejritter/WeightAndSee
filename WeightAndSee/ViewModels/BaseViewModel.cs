@@ -1,39 +1,36 @@
-﻿namespace WeightAndSee.ViewModels;
+﻿
+namespace WeightAndSee.ViewModels;
 
-public abstract partial class BaseViewModel: ObservableObject
+public abstract partial class BaseViewModel : ObservableObject
 {
-    protected BaseViewModel(IPopupService popupService)
+    public BaseViewModel(IPopupService popupService)
     {
-        _popupService = popupService;
+        PopupService = popupService;
     }
-    private readonly IPopupService _popupService;
 
-    [ObservableProperty]
-    private bool _confirmOrDenied = false;
+    protected readonly IPopupService PopupService;
+    
+
     public async Task<bool> ShowPopupAsync(string title, string message, bool isDismissable)
     {
-        var results = await _popupService.ShowPopupAsync<GeneralPopupViewModel>(
-            onPresenting: vm =>
-            {
-                vm.Title = title;
-                vm.Message = message;
-                vm.IsDismissable = isDismissable;
+        var queryAttributes = new Dictionary<string, object>
+        {
+            [nameof(BasePopupViewModel.Title)] = title,
+            [nameof(BasePopupViewModel.Message)] = message
+        };
 
-                vm.ClosePopup += (sender, result) =>
-                    {
-                        if (result)
-                        {
-                            ConfirmOrDenied = true;
-                        }
-                        else
-                        {
-                            ConfirmOrDenied = false;
-                        }
-                        _popupService.ClosePopupAsync();
-                    };
-                });
-
-        return ConfirmOrDenied;
+        var results = await this.PopupService.ShowPopupAsync<GeneralPopupViewModel>(
+                shell: Shell.Current,
+                options: new PopupOptions { CanBeDismissedByTappingOutsideOfPopup = isDismissable },
+                shellParameters: queryAttributes);
+       if (results is not null &&
+                results is IPopupResult<bool> userResults)
+        {
+            return userResults.Result;
+        }
+       else
+        {
+            return false;
+        }
     }
-
 }

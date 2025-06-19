@@ -22,13 +22,13 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
     private const double poundsToKgUnit = 0.45359237; // Factor to convert Pounds to KG
 
     protected int _plateSpacing = 10; // Spacing between plates (negative for overlap)
-    protected int _plateWidth = 15; // Approximate width of each plate
+    protected int _plateWidth = 8; // Make plates thin to match new visual
             // Add left plates with overlap (right to left)
     protected int _leftOffset = 50; // Distance from center to first plate
             // Add right plates with overlap (left to right)
     protected int _rightOffset = 50; // Distance from center to first plate
 
-    protected int _plateViewTranslationY = 8;// little plates need to be shifted down to center on bar.
+    protected int _plateViewTranslationY = 12;// little plates need to be shifted down to center on bar.
         protected Line _barLine = new Line()
         {
             X1 = 0,
@@ -38,7 +38,7 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
             StrokeThickness = 8,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
-            TranslationY = -10
+            TranslationY = 0
         };
 
 
@@ -152,14 +152,11 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
             // Position plates from center going left
             plateView.HorizontalOptions = LayoutOptions.Center;
             plateView.TranslationX = -(_leftOffset + (i * (_plateWidth + _plateSpacing)));
-            if (plate.KiloGram < 10)
-            {
-                plateView.TranslationY = _plateViewTranslationY;
-            }
+            plateView.TranslationY = _plateViewTranslationY;
+            
             platesGrid.Add(plateView);
         }
         
-
         for (int i = 0; i < RightPlates.Count; i++)
         {
             var plate = RightPlates[i];
@@ -168,10 +165,8 @@ public abstract partial class BaseModel : ObservableObject , IWeightConversionSe
             // Position plates from center going right
             plateView.HorizontalOptions = LayoutOptions.Center;
             plateView.TranslationX = _rightOffset + (i * (_plateWidth + _plateSpacing));
-            if (plate.KiloGram < 10)
-            {
-                plateView.TranslationY = _plateViewTranslationY;
-            }
+            plateView.TranslationY = _plateViewTranslationY;
+            
             platesGrid.Add(plateView);
         }                 
         barLine.X2 = ((LeftPlates.Count() * 2) * _plateWidth) + 200;

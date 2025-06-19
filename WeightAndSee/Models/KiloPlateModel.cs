@@ -1,13 +1,14 @@
 ﻿using Microsoft.Maui.Controls.Shapes;
 
 namespace WeightAndSee.Models;
-public partial class KiloPlateModel: BaseModel
+public partial class KiloPlateModel : BaseModel
 {
     public KiloPlateModel()
     {
         LeftPlates.CollectionChanged += Plates_CollectionChanged;
         RightPlates.CollectionChanged += Plates_CollectionChanged;
     }
+
     [ObservableProperty]
     private double _kiloGram;
 
@@ -23,55 +24,45 @@ public partial class KiloPlateModel: BaseModel
     [ObservableProperty]
     private bool _isAvailable = true;
 
-    public override ContentView CreateDisplayContent()
-{
-    // Create a contrasting border color
-    Color borderColor = PlateColor == Colors.White || PlateColor == Colors.Yellow 
-            || PlateColor.GetLuminosity() > 0.8 ? 
-                Colors.Black : Colors.Transparent;
+    // Add this computed property
+    public bool NeedsBorder => PlateColor == Colors.White || PlateColor == Colors.Yellow;
 
-    return new ContentView()
+    // Add this property for border color
+    public Color BorderColor => Colors.Black;
+
+    // Add this property for visual contrast
+    public Color ContrastColor => PlateColor == Colors.White || PlateColor == Colors.Yellow ? 
+        Colors.Black : Colors.White;
+
+    public override View CreateDisplayContent()
     {
-        Content = new VerticalStackLayout()
+        var plateContainer = new VerticalStackLayout
         {
-            new Border
-            {
-                Stroke = borderColor,
-                StrokeThickness = 1,
-                StrokeShape = new RoundRectangle { CornerRadius = 2 },
-                Padding = 2,
-                Content = new VerticalStackLayout()
-                {
-                    Spacing = 3,
-                    Children =
-                    {
-                        new Line()
-                        {
-                            X1 = 0,
-                            X2 = 0,
-                            Y1 = 0,
-                            Stroke = PlateColor,
-                            StrokeThickness = 8
-                        }
-                        .Bind(Line.Y2Property,source:this.PlateSize)
-                    }
-                }
-            },
+            Spacing = 1,
+            HorizontalOptions = LayoutOptions.Center
+        };
 
-            new Label()
-                .Text(KiloGram.ToString())
-                .Invoke(label =>
-                {
-                    if(this.PlateColor == Colors.White || this.PlateColor == Colors.Yellow)
-                    {
-                        label.TextColor = Colors.Black;
-                    }
-                    else
-                    {
-                        label.TextColor = PlateColor;
-                    }
-                })
-        }
-    };
-}
+        var plateVisual = new Border
+        {
+            HeightRequest = PlateSize,
+            WidthRequest = _plateWidth,
+            BackgroundColor = PlateColor,
+            StrokeShape = new RoundRectangle { CornerRadius = 2 },
+            Stroke = NeedsBorder ? BorderColor : PlateColor,
+            StrokeThickness = 1
+        };
+
+        var weightLabel = new Label
+        {
+            Text = KiloGram.ToString(),
+            TextColor = NeedsBorder ? BorderColor : PlateColor,
+            FontSize = 10,
+            HorizontalTextAlignment = TextAlignment.Center
+        };
+
+        plateContainer.Children.Add(plateVisual);
+        plateContainer.Children.Add(weightLabel);
+
+        return plateContainer;
+    }
 }

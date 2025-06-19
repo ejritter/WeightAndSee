@@ -1,14 +1,15 @@
-﻿
-
-
-
-namespace WeightAndSee.ViewModels;
+﻿namespace WeightAndSee.ViewModels;
 public partial class MainPageViewModel : BaseViewModel
 {
     public MainPageViewModel(IPopupService popupService) : base(popupService)
     {
+        BarTypesList.Add(new BarbellModel() { BarType = BarTypes.Barbell.ToString() });
+        BarTypesList.Add(new DumbbellModel() { BarType = BarTypes.Dumbbell.ToString() });
         LoadAllPlates();
     }
+
+    [ObservableProperty]
+    private ObservableCollection<BaseModel> _barTypesList = new();
 
     [ObservableProperty]
     private ObservableCollection<KiloPlateModel> _kiloPlateModels = new();
@@ -34,8 +35,6 @@ public partial class MainPageViewModel : BaseViewModel
     [NotifyPropertyChangedFor(nameof(ShowBar))]
     private string _barReport = string.Empty;
 
-
-
     private bool _canSubmit = false;
 
     [ObservableProperty]
@@ -43,9 +42,6 @@ public partial class MainPageViewModel : BaseViewModel
     public bool ShowReport => !string.IsNullOrEmpty(BarReport);
 
     public bool ShowBar => !string.IsNullOrEmpty(BarReport);
-
-    private CancellationTokenSource? _debounceCts;
-    private const int DebounceDelayMilliseconds = 1500; // Adjust delay as needed
 
     private void LoadAllPlates()
     {

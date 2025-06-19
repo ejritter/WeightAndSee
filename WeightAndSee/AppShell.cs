@@ -1,10 +1,10 @@
 ﻿namespace WeightAndSee;
 
-public class AppShell : Shell
+public partial class AppShell : Shell
 {
-    public AppShell(MainPage mainPage)
+    public AppShell() // Removed MainPage mainPage parameter
     {
-        Items.Add(mainPage);
-        Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+        InitializeComponent();
+        Routing.RegisterRoute(nameof(Pages.MainPage), typeof(Pages.MainPage));
     }
 }

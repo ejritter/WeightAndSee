@@ -1,20 +1,10 @@
 ﻿namespace WeightAndSee;
 
-public class App : Application
+public partial class App : Application
 {
-    private Shell _shell { get; init; }
-    public App(AppShell shell)
+    public App()
     {
-        _shell = shell;
-    }
-
-    protected override Window CreateWindow(IActivationState? activationState)
-    {
-        var window = new Window(_shell)
-        {
-
-        };
-
-        return window;
+        InitializeComponent();
+        MainPage = new AppShell();
     }
 }

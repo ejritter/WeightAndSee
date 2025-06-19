@@ -1,22 +1,19 @@
-﻿namespace WeightAndSee.ViewModels;
-
+﻿
+namespace WeightAndSee.ViewModels;
 public partial class GeneralPopupViewModel : BasePopupViewModel
 {
-    public GeneralPopupViewModel()
+    public GeneralPopupViewModel(IPopupService popupService) : base(popupService)
+    {
+
+    }
+
+    //needed for source generator because of [relaycommand] and [observableproperty]
+    public GeneralPopupViewModel() : base(null)
     {
 
     }
 
 
-    [ObservableProperty]
-    string title = string.Empty;
 
-    [ObservableProperty]
-    private string message = string.Empty;
-
-    [ObservableProperty]
-    private bool isDismissable = true;
-
-
-
+   
 }
