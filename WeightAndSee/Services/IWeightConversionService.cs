@@ -1,5 +1,5 @@
 ﻿namespace WeightAndSee.Services;
-interface IWeightConversionService
+public interface IWeightConversionService
 {
     int KilogramToPound(BaseModel bar);
     double PoundToKilogram(BaseModel bar);

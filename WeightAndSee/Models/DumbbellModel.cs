@@ -1,11 +1,11 @@
 ﻿namespace WeightAndSee.Models;
 public partial class DumbbellModel : BaseModel
 {
-    public DumbbellModel()
+    public DumbbellModel(IWeightConversionService weightConversionService) : base(weightConversionService)
     {
-        _barLine.X2 = 30;
-        LeftPlates.CollectionChanged += Plates_CollectionChanged;
-        RightPlates.CollectionChanged += Plates_CollectionChanged;
+        BarLine.X2 = 30;
+        //LeftPlates.CollectionChanged += Plates_CollectionChanged;
+        //RightPlates.CollectionChanged += Plates_CollectionChanged;
     }
-
+   
 }

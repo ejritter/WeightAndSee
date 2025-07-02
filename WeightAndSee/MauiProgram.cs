@@ -8,7 +8,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
-            .UseMauiCommunityToolkitMarkup()
+            //.UseMauiCommunityToolkitMarkup()//can probably remove since we using xaml again
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,6 +20,9 @@ public static class MauiProgram
 #endif
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<App>();
+
+        builder.Services.AddSingleton<IWeightConversionService, WeightConversionService>();
+        builder.Services.AddSingleton<IViewCreatorService, ViewCreatorService>();
 
         builder.Services.AddSingleton<MainPageViewModel>();
         builder.Services.AddSingleton<MainPage>();

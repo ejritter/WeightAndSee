@@ -3,10 +3,10 @@
 namespace WeightAndSee.Models;
 public partial class KiloPlateModel : BaseModel
 {
-    public KiloPlateModel()
+    public KiloPlateModel(IWeightConversionService weightConversionService) : base(weightConversionService)
     {
-        LeftPlates.CollectionChanged += Plates_CollectionChanged;
-        RightPlates.CollectionChanged += Plates_CollectionChanged;
+        //LeftPlates.CollectionChanged += Plates_CollectionChanged;
+        //RightPlates.CollectionChanged += Plates_CollectionChanged;
     }
 
     [ObservableProperty]
@@ -34,35 +34,35 @@ public partial class KiloPlateModel : BaseModel
     public Color ContrastColor => PlateColor == Colors.White || PlateColor == Colors.Yellow ? 
         Colors.Black : Colors.White;
 
-    public override View CreateDisplayContent()
-    {
-        var plateContainer = new VerticalStackLayout
-        {
-            Spacing = 1,
-            HorizontalOptions = LayoutOptions.Center
-        };
+    //public override View CreateDisplayContent()
+    //{
+    //    var plateContainer = new VerticalStackLayout
+    //    {
+    //        Spacing = 1,
+    //        HorizontalOptions = LayoutOptions.Center
+    //    };
 
-        var plateVisual = new Border
-        {
-            HeightRequest = PlateSize,
-            WidthRequest = _plateWidth,
-            BackgroundColor = PlateColor,
-            StrokeShape = new RoundRectangle { CornerRadius = 2 },
-            Stroke = NeedsBorder ? BorderColor : PlateColor,
-            StrokeThickness = 1
-        };
+    //    var plateVisual = new Border
+    //    {
+    //        HeightRequest = PlateSize,
+    //        WidthRequest = _plateWidth,
+    //        BackgroundColor = PlateColor,
+    //        StrokeShape = new RoundRectangle { CornerRadius = 2 },
+    //        Stroke = NeedsBorder ? BorderColor : PlateColor,
+    //        StrokeThickness = 1
+    //    };
 
-        var weightLabel = new Label
-        {
-            Text = KiloGram.ToString(),
-            TextColor = NeedsBorder ? BorderColor : PlateColor,
-            FontSize = 10,
-            HorizontalTextAlignment = TextAlignment.Center
-        };
+    //    var weightLabel = new Label
+    //    {
+    //        Text = KiloGram.ToString(),
+    //        TextColor = NeedsBorder ? BorderColor : PlateColor,
+    //        FontSize = 10,
+    //        HorizontalTextAlignment = TextAlignment.Center
+    //    };
 
-        plateContainer.Children.Add(plateVisual);
-        plateContainer.Children.Add(weightLabel);
+    //    plateContainer.Children.Add(plateVisual);
+    //    plateContainer.Children.Add(weightLabel);
 
-        return plateContainer;
-    }
+    //    return plateContainer;
+    //}
 }

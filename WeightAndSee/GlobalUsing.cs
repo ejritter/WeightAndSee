@@ -14,10 +14,22 @@ global using WeightAndSee.Models;
 global using WeightAndSee.Pages;
 global using WeightAndSee.Services;
 global using WeightAndSee.ViewModels;
+global using WeightAndSee.Extensions;
+global using WeightAndSee.Helpers;
 global using WeightAndSee.Views;
 global using WeightAndSee.Controls;
-global using static CommunityToolkit.Maui.Markup.GridRowsColumns;
+//global using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
+//global using Microsoft.Maui.Controls.Grid;
+//global using Microsoft.Maui.Controls.Shapes.Line;
+//global using Microsoft.Maui.Controls.Border;
+//global using Microsoft.Maui.Graphics.Colors;
+//global using Microsoft.Maui.Controls.LayoutOptions;
+//global using Microsoft.Maui.Controls.ContentView;
+//global using Microsoft.Maui.Controls.View;
+
+global using System.Collections;
+global using System.Collections.Specialized;
 global using System.Collections.ObjectModel;
 global using System.Linq;
 global using System.Text;

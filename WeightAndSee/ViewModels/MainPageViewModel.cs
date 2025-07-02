@@ -1,10 +1,19 @@
 ﻿namespace WeightAndSee.ViewModels;
 public partial class MainPageViewModel : BaseViewModel
 {
-    public MainPageViewModel(IPopupService popupService) : base(popupService)
+    public MainPageViewModel(IPopupService popupService, IWeightConversionService weightConversionService,
+            IViewCreatorService viewCreatorService) : base(popupService, weightConversionService, viewCreatorService)
     {
-        BarTypesList.Add(new BarbellModel() { BarType = BarTypes.Barbell.ToString() });
-        BarTypesList.Add(new DumbbellModel() { BarType = BarTypes.Dumbbell.ToString() });
+        var barBell = new BarbellModel(base.WeightConversionService) { BarType = BarTypes.Barbell.ToString() };
+            barBell.LeftPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
+            barBell.RightPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
+
+        var dumbBell = new DumbbellModel(base.WeightConversionService) { BarType = BarTypes.Dumbbell.ToString() };
+            dumbBell.LeftPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
+            dumbBell.RightPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
+        
+        BarTypesList.Add(barBell);
+        BarTypesList.Add(dumbBell);
         LoadAllPlates();
     }
 
@@ -51,7 +60,7 @@ public partial class MainPageViewModel : BaseViewModel
                                    .Cast<KiloPlates>()
                                    .Select(plate =>
                                    {
-                                       var kpModel = new KiloPlateModel()
+                                       var kpModel = new KiloPlateModel(new WeightConversionService())
                                        {
                                            KiloPlate = plate.ToString(),
                                            KiloGram = plate.GetWeightInKg(),
@@ -109,7 +118,9 @@ public partial class MainPageViewModel : BaseViewModel
         BarType.AddPlatesToBar(double.Parse(DesiredWeightText), PlatesAvailableToYou);
         BarReport = BarType.BarReport();
         BarReportView = BarType.BarReportView();
-        BarView = BarType.DisplayItem;
+        ViewCreatorService.SetViewBar(BarType);
+        //BarView = BarType.DisplayItem;
+        BarView = ViewCreatorService.DisplayView;
         new Entry().HideKeyboardAsync();
     }
 

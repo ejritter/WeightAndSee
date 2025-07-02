@@ -1,14 +1,14 @@
 ﻿
 namespace WeightAndSee.ViewModels;
 
-public abstract partial class BaseViewModel : ObservableObject
+public abstract partial class BaseViewModel(IPopupService popupService, IWeightConversionService weightConversionService, 
+                                            IViewCreatorService viewCreatorService) : ObservableObject
 {
-    public BaseViewModel(IPopupService popupService)
-    {
-        PopupService = popupService;
-    }
 
-    protected readonly IPopupService PopupService;
+
+    protected readonly IPopupService PopupService = popupService;
+    protected readonly IWeightConversionService WeightConversionService = weightConversionService;
+    protected readonly IViewCreatorService ViewCreatorService = viewCreatorService;
     
 
     public async Task<bool> ShowPopupAsync(string title, string message, bool isDismissable)
