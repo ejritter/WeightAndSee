@@ -9,7 +9,7 @@ public interface IViewCreatorService
     View CreateDisplayContent();
 
     View CreatePlateView(KiloPlateModel plate);
-     ContentView DisplayView {get; set;}
+     //ContentView _displayView {get; set;}
 
     ContentView DisplayItem { get; }
 

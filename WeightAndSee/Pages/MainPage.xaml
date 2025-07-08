@@ -18,7 +18,7 @@
             <ContentView Content="{Binding BarView}" 
                          IsVisible="{Binding ShowBar}" 
                          HorizontalOptions="Center" 
-                         BackgroundColor="#FAFAFA" />
+                         BackgroundColor="#FAFAFA"/>
         </VerticalStackLayout>
     </ScrollView>
 </pages:BasePage>

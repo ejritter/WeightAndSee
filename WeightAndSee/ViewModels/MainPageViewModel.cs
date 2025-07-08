@@ -120,7 +120,7 @@ public partial class MainPageViewModel : BaseViewModel
         BarReportView = BarType.BarReportView();
         ViewCreatorService.SetViewBar(BarType);
         //BarView = BarType.DisplayItem;
-        BarView = ViewCreatorService.DisplayView;
+        BarView = ViewCreatorService.DisplayItem;
         new Entry().HideKeyboardAsync();
     }
 
@@ -141,61 +141,78 @@ public partial class MainPageViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void SetPlateToAvailable(object? sender)
+    private void SetPlateStatus(object? sender)
     {
-        if (sender is CollectionView cv && cv.SelectedItem is KiloPlateModel kp)
+        if (sender is KiloPlateModel pm)
         {
-            cv.SelectedItem = null;
-            var found = PlatesAvailableToYou.FirstOrDefault(pa => pa.KiloGram == kp.KiloGram);
-            if (found is not null)
+            //cv.SelectedItem = null;
+            if (pm.IsAvailable)
             {
-                _ = ShowPopupAsync(title: "Heads up!", message: $"plate {kp.KiloGram} already available.", isDismissable: true);
-                return;
+                pm.IsAvailable = false;
             }
             else
             {
-                //if the plate is 25 make it first or 0.25 make it last
-                if (kp.KiloGram == 25)
-                {
-                    PlatesAvailableToYou.Insert(0, kp.ClonePlate());
-                }
-                else if (kp.KiloGram == 0.25)
-                {
-                    PlatesAvailableToYou.Insert(PlatesAvailableToYou.Count, kp.ClonePlate());
-                }
-                else
-                {
-                    var currentPlates = PlatesAvailableToYou.ToList();
-                    foreach (KiloPlateModel currentPlate in currentPlates)
-                    {
-                        if (kp.KiloGram > currentPlate.KiloGram)
-                        {
-                            PlatesAvailableToYou.Insert(PlatesAvailableToYou.IndexOf(currentPlate), kp.ClonePlate());
-                            break;
-                        }
-                    }
-                }
-                _ = ShowPopupAsync(title: "Heads up!", message: $"Plate {kp.KiloGram} added.", isDismissable: true);
+                pm.IsAvailable = true;
             }
         }
     }
 
-    [RelayCommand]
-    private void SetPlateToUnavailable(object? sender)
-    {
-        if (sender is CollectionView cv && cv.SelectedItem is KiloPlateModel kp)
-        {
-            cv.SelectedItem = null;
-            var found = PlatesAvailableToYou.FirstOrDefault(pa => pa.KiloGram == kp.KiloGram);
-            if (found is not null)
-            {
-                PlatesAvailableToYou.Remove(found);
-                _ = ShowPopupAsync(title: "Heads up!", message: $"Plate {kp.KiloGram} removed.", isDismissable: true);
-            }
-            else
-            {
-                return;
-            }
-        }
-    }
+    //[RelayCommand]
+    //private void SetPlateStatus(object? sender)
+    //{
+    //    if (sender is CollectionView cv && cv.SelectedItem is KiloPlateModel kp)
+    //    {
+    //        cv.SelectedItem = null;
+    //        var found = PlatesAvailableToYou.FirstOrDefault(pa => pa.KiloGram == kp.KiloGram);
+    //        if (found is not null)
+    //        {
+    //            _ = ShowPopupAsync(title: "Heads up!", message: $"plate {kp.KiloGram} already available.", isDismissable: true);
+    //            return;
+    //        }
+    //        else
+    //        {
+    //            //if the plate is 25 make it first or 0.25 make it last
+    //            if (kp.KiloGram == 25)
+    //            {
+    //                PlatesAvailableToYou.Insert(0, kp.ClonePlate());
+    //            }
+    //            else if (kp.KiloGram == 0.25)
+    //            {
+    //                PlatesAvailableToYou.Insert(PlatesAvailableToYou.Count, kp.ClonePlate());
+    //            }
+    //            else
+    //            {
+    //                var currentPlates = PlatesAvailableToYou.ToList();
+    //                foreach (KiloPlateModel currentPlate in currentPlates)
+    //                {
+    //                    if (kp.KiloGram > currentPlate.KiloGram)
+    //                    {
+    //                        PlatesAvailableToYou.Insert(PlatesAvailableToYou.IndexOf(currentPlate), kp.ClonePlate());
+    //                        break;
+    //                    }
+    //                }
+    //            }
+    //            _ = ShowPopupAsync(title: "Heads up!", message: $"Plate {kp.KiloGram} added.", isDismissable: true);
+    //        }
+    //    }
+    //}
+
+    //[RelayCommand]
+    //private void SetPlateToUnavailable(object? sender)
+    //{
+    //    if (sender is CollectionView cv && cv.SelectedItem is KiloPlateModel kp)
+    //    {
+    //        cv.SelectedItem = null;
+    //        var found = PlatesAvailableToYou.FirstOrDefault(pa => pa.KiloGram == kp.KiloGram);
+    //        if (found is not null)
+    //        {
+    //            PlatesAvailableToYou.Remove(found);
+    //            _ = ShowPopupAsync(title: "Heads up!", message: $"Plate {kp.KiloGram} removed.", isDismissable: true);
+    //        }
+    //        else
+    //        {
+    //            return;
+    //        }
+    //    }
+    //}
 }

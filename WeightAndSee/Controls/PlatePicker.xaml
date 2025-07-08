@@ -5,13 +5,11 @@
              x:Class="WeightAndSee.Controls.PlatePicker"
              x:Name="RootPlatePicker">
     <ScrollView>
-        <VerticalStackLayout Spacing="4" Margin="4" Padding="4" HorizontalOptions="CenterAndExpand">
+        <VerticalStackLayout Spacing="4" Margin="4" Padding="4" HorizontalOptions="Center">
             <Label Text="Plate Store." TextColor="Black" />
             <HorizontalStackLayout Spacing="4" Margin="4" Padding="4">
                 <CollectionView SelectionMode="Single"
                                 ItemsSource="{Binding KiloPlateModels}"
-                                SelectionChangedCommand="{Binding SetPlateToAvailableCommand}"
-                                SelectionChangedCommandParameter="{Binding Source={x:Reference Name=PlateStoreCollectionView}}"
                                 x:Name="PlateStoreCollectionView"
                                 HeightRequest="120"
                                 WidthRequest="400"
@@ -27,6 +25,11 @@
                                     Padding="2"
                                     MinimumWidthRequest="20"
                                     HorizontalOptions="Center">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={x:Reference PlateStoreCollectionView}, Path=BindingContext.SetPlateStatusCommand}"                                
+                                        CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
                                 <Border.Triggers>
                                     <DataTrigger TargetType="Border" Binding="{Binding NeedsBorder}" Value="True">
                                         <Setter Property="Stroke" Value="{Binding BorderColor}" />
@@ -44,17 +47,17 @@
                                             HeightRequest="{Binding PlateSize}"
                                             HorizontalOptions="Center">
                                         <Border.Triggers>
-                                            <DataTrigger TargetType="Border"
-                                                         Binding="{Binding NeedsBorder}"
-                                                         Value="True">
-                                                <Setter Property="Stroke"
-                                                        Value="{Binding BorderColor}" />
-                                                <Setter Property="StrokeThickness"
-                                                        Value="1" />
+                                            <DataTrigger TargetType="Border" Binding="{Binding NeedsBorder}" Value="True">
+                                                <Setter Property="Stroke" Value="{Binding BorderColor}" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsNotAvailable}" Value="True">
+                                                <Setter Property="Opacity" Value="0.2" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsAvailable}" Value="True">
+                                                <Setter Property="Opacity" Value="1" />
                                             </DataTrigger>
                                         </Border.Triggers>
                                     </Border>
-                                    
                                     <Label Grid.Row="1"
                                            Text="{Binding KiloGram}"
                                            TextColor="{Binding PlateColor}"
@@ -73,7 +76,7 @@
                 </CollectionView>
             </HorizontalStackLayout>
 
-            <Label TextColor="Black">
+            <!--<Label TextColor="Black">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Tap plate below if you cannot use it. It will not be used on the bar." TextColor="Black"/>
@@ -146,9 +149,9 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-            </HorizontalStackLayout>
+            </HorizontalStackLayout>-->
 
-            <CollectionView x:Name="PlatesCollectionView"
+            <!--<CollectionView x:Name="PlatesCollectionView"
                             ItemsSource="{Binding Source={x:Reference RootPlatePicker}, Path=Plates}"
                             HeightRequest="10"
                             WidthRequest="200"
@@ -207,7 +210,7 @@
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </CollectionView>
+            </CollectionView>-->
         </VerticalStackLayout>
     </ScrollView>
 </ContentView>

@@ -18,9 +18,9 @@ public partial class PlatePicker : ContentView
 
     private static void OnPlatesChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is PlatePicker picker && picker.PlatesCollectionView != null)
+        if (bindable is PlatePicker picker && picker.PlateStoreCollectionView != null)
         {
-            picker.PlatesCollectionView.ItemsSource = newValue as IEnumerable<KiloPlateModel>;
+            picker.PlateStoreCollectionView.ItemsSource = newValue as IEnumerable<KiloPlateModel>;
         }
     }
 

@@ -18,7 +18,7 @@ global using WeightAndSee.Extensions;
 global using WeightAndSee.Helpers;
 global using WeightAndSee.Views;
 global using WeightAndSee.Controls;
-//global using static CommunityToolkit.Maui.Markup.GridRowsColumns;
+global using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 //global using Microsoft.Maui.Controls.Grid;
 //global using Microsoft.Maui.Controls.Shapes.Line;

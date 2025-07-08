@@ -22,7 +22,10 @@ public partial class KiloPlateModel : BaseModel
     private double _plateSize;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsNotAvailable))]
     private bool _isAvailable = true;
+
+    public bool IsNotAvailable => !IsAvailable;
 
     // Add this computed property
     public bool NeedsBorder => PlateColor == Colors.White || PlateColor == Colors.Yellow;
@@ -34,35 +37,5 @@ public partial class KiloPlateModel : BaseModel
     public Color ContrastColor => PlateColor == Colors.White || PlateColor == Colors.Yellow ? 
         Colors.Black : Colors.White;
 
-    //public override View CreateDisplayContent()
-    //{
-    //    var plateContainer = new VerticalStackLayout
-    //    {
-    //        Spacing = 1,
-    //        HorizontalOptions = LayoutOptions.Center
-    //    };
 
-    //    var plateVisual = new Border
-    //    {
-    //        HeightRequest = PlateSize,
-    //        WidthRequest = _plateWidth,
-    //        BackgroundColor = PlateColor,
-    //        StrokeShape = new RoundRectangle { CornerRadius = 2 },
-    //        Stroke = NeedsBorder ? BorderColor : PlateColor,
-    //        StrokeThickness = 1
-    //    };
-
-    //    var weightLabel = new Label
-    //    {
-    //        Text = KiloGram.ToString(),
-    //        TextColor = NeedsBorder ? BorderColor : PlateColor,
-    //        FontSize = 10,
-    //        HorizontalTextAlignment = TextAlignment.Center
-    //    };
-
-    //    plateContainer.Children.Add(plateVisual);
-    //    plateContainer.Children.Add(weightLabel);
-
-    //    return plateContainer;
-    //}
 }

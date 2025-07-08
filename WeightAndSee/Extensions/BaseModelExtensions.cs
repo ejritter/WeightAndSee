@@ -3,7 +3,23 @@
 public static class BaseModelExtensions
 {
 
-
+    public static Line CloneBarLine(this BaseModel bar)
+    {
+        //when drawing lines, always work with a new one.
+        //trying to reuse a line causes havok
+        return new Line
+        {
+            X1 = bar.BarLine.X1,
+            X2 = bar.BarLine.X2,
+            Y1 = bar.BarLine.Y1,
+            Y2 = bar.BarLine.Y2,
+            Stroke = bar.BarLine.Stroke,
+            StrokeThickness = bar.BarLine.StrokeThickness,
+            HorizontalOptions = bar.BarLine.HorizontalOptions,
+            VerticalOptions = bar.BarLine.VerticalOptions,
+            TranslationY = bar.BarLine.TranslationY
+        };
+    }
     public static void SetBarWeight(this BaseModel bar, double weight)
     {
         bar.BarWeight = weight;
