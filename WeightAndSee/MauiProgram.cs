@@ -23,6 +23,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<IWeightConversionService, WeightConversionService>();
         builder.Services.AddSingleton<IViewCreatorService, ViewCreatorService>();
+        builder.Services.AddSingleton<IToastService, ToastService>();
 
         builder.Services.AddSingleton<MainPageViewModel>();
         builder.Services.AddSingleton<MainPage>();

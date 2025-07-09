@@ -1,1 +1,7 @@
-﻿public enum BarTypes { Barbell, Dumbbell }
+﻿namespace WeightAndSee.Models;
+
+public enum BarTypes
+{
+    Barbell,
+    Dumbbell
+}

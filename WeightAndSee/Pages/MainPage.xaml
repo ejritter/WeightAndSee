@@ -10,7 +10,7 @@
     <ScrollView Margin="5" Padding="5">
         <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
             <controls:PlatePicker HorizontalOptions="Center" BackgroundColor="#FAFAFA" />
-            <controls:BarPicker HorizontalOptions="Center" BackgroundColor="#FAFAFA" />
+            <controls:BarPicker HorizontalOptions="Center" BackgroundColor="#FAFAFA" BindingContext="{Binding}" />
             <ContentView Content="{Binding BarReportView}" 
                          IsVisible="{Binding ShowReport}" 
                          HorizontalOptions="Center" 

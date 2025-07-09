@@ -2,20 +2,32 @@
 public partial class MainPageViewModel : BaseViewModel
 {
     public MainPageViewModel(IPopupService popupService, IWeightConversionService weightConversionService,
-            IViewCreatorService viewCreatorService) : base(popupService, weightConversionService, viewCreatorService)
+            IViewCreatorService viewCreatorService, IToastService toastService) : base(popupService, weightConversionService, viewCreatorService, toastService)
     {
-        var barBell = new BarbellModel(base.WeightConversionService) { BarType = BarTypes.Barbell.ToString() };
-            barBell.LeftPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
-            barBell.RightPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
+        _barbell = new BarbellModel(base.WeightConversionService) { BarType = BarTypes.Barbell.ToString() };
+            _barbell.LeftPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
+            _barbell.RightPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
 
-        var dumbBell = new DumbbellModel(base.WeightConversionService) { BarType = BarTypes.Dumbbell.ToString() };
-            dumbBell.LeftPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
-            dumbBell.RightPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
+        _dumbbell = new DumbbellModel(base.WeightConversionService) { BarType = BarTypes.Dumbbell.ToString() };
+            _dumbbell.LeftPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
+            _dumbbell.RightPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
         
-        BarTypesList.Add(barBell);
-        BarTypesList.Add(dumbBell);
+        //BarTypesList.Add(barBell);
+        //BarTypesList.Add(dumbBell);
         LoadAllPlates();
     }
+
+    [ObservableProperty]
+    private bool _isBarbellChecked = false;
+
+    [ObservableProperty]
+    private bool _isDumbbellChecked = false;
+
+    [ObservableProperty]
+    private BarbellModel _barbell = null;
+
+    [ObservableProperty]
+    private DumbbellModel _dumbbell = null;
 
     [ObservableProperty]
     private ObservableCollection<BaseModel> _barTypesList = new();
@@ -119,7 +131,6 @@ public partial class MainPageViewModel : BaseViewModel
         BarReport = BarType.BarReport();
         BarReportView = BarType.BarReportView();
         ViewCreatorService.SetViewBar(BarType);
-        //BarView = BarType.DisplayItem;
         BarView = ViewCreatorService.DisplayItem;
         new Entry().HideKeyboardAsync();
     }
@@ -141,11 +152,27 @@ public partial class MainPageViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void SetPlateStatus(object? sender)
+    private void SetBarType(object? sender)
+    {
+        if (sender is string barType)
+        {
+            if (barType == "Barbell")
+            {
+                BarType = Barbell;
+            }
+            else if (barType == "Dumbbell")
+            {
+                BarType = Dumbbell;
+            }
+        }
+    }
+
+    [RelayCommand]
+    private async Task SetPlateStatus(object? sender)
     {
         if (sender is KiloPlateModel pm)
         {
-            //cv.SelectedItem = null;
+            var toastMessage = "";
             if (pm.IsAvailable)
             {
                 pm.IsAvailable = false;
@@ -154,65 +181,13 @@ public partial class MainPageViewModel : BaseViewModel
             {
                 pm.IsAvailable = true;
             }
+            toastMessage = 
+                    pm.IsAvailable == true ? 
+                    "Plate available." : "Plate unavailable";
+
+            await ToastService.ShowToastAsync(message: toastMessage);
         }
     }
 
-    //[RelayCommand]
-    //private void SetPlateStatus(object? sender)
-    //{
-    //    if (sender is CollectionView cv && cv.SelectedItem is KiloPlateModel kp)
-    //    {
-    //        cv.SelectedItem = null;
-    //        var found = PlatesAvailableToYou.FirstOrDefault(pa => pa.KiloGram == kp.KiloGram);
-    //        if (found is not null)
-    //        {
-    //            _ = ShowPopupAsync(title: "Heads up!", message: $"plate {kp.KiloGram} already available.", isDismissable: true);
-    //            return;
-    //        }
-    //        else
-    //        {
-    //            //if the plate is 25 make it first or 0.25 make it last
-    //            if (kp.KiloGram == 25)
-    //            {
-    //                PlatesAvailableToYou.Insert(0, kp.ClonePlate());
-    //            }
-    //            else if (kp.KiloGram == 0.25)
-    //            {
-    //                PlatesAvailableToYou.Insert(PlatesAvailableToYou.Count, kp.ClonePlate());
-    //            }
-    //            else
-    //            {
-    //                var currentPlates = PlatesAvailableToYou.ToList();
-    //                foreach (KiloPlateModel currentPlate in currentPlates)
-    //                {
-    //                    if (kp.KiloGram > currentPlate.KiloGram)
-    //                    {
-    //                        PlatesAvailableToYou.Insert(PlatesAvailableToYou.IndexOf(currentPlate), kp.ClonePlate());
-    //                        break;
-    //                    }
-    //                }
-    //            }
-    //            _ = ShowPopupAsync(title: "Heads up!", message: $"Plate {kp.KiloGram} added.", isDismissable: true);
-    //        }
-    //    }
-    //}
-
-    //[RelayCommand]
-    //private void SetPlateToUnavailable(object? sender)
-    //{
-    //    if (sender is CollectionView cv && cv.SelectedItem is KiloPlateModel kp)
-    //    {
-    //        cv.SelectedItem = null;
-    //        var found = PlatesAvailableToYou.FirstOrDefault(pa => pa.KiloGram == kp.KiloGram);
-    //        if (found is not null)
-    //        {
-    //            PlatesAvailableToYou.Remove(found);
-    //            _ = ShowPopupAsync(title: "Heads up!", message: $"Plate {kp.KiloGram} removed.", isDismissable: true);
-    //        }
-    //        else
-    //        {
-    //            return;
-    //        }
-    //    }
-    //}
+    
 }
