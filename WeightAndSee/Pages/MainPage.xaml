@@ -3,22 +3,23 @@
                 xmlns:pages="clr-namespace:WeightAndSee.Pages"
                 xmlns:viewmodels="clr-namespace:WeightAndSee.ViewModels"
                 xmlns:controls="clr-namespace:WeightAndSee.Controls"
+                xmlns:components="clr-namespace:WeightAndSee.Components"
                 x:Class="WeightAndSee.Pages.MainPage"
                 x:TypeArguments="viewmodels:MainPageViewModel"
                 x:DataType="viewmodels:MainPageViewModel"
-                BackgroundColor="White">
+                >
     <ScrollView Margin="5" Padding="5">
         <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
-            <controls:PlatePicker HorizontalOptions="Center" BackgroundColor="#FAFAFA" />
-            <controls:BarPicker HorizontalOptions="Center" BackgroundColor="#FAFAFA" BindingContext="{Binding}" />
+            <components:PlatePicker HorizontalOptions="Center"  />
+            <components:BarPicker HorizontalOptions="Center"  BindingContext="{Binding}" />
             <ContentView Content="{Binding BarReportView}" 
                          IsVisible="{Binding ShowReport}" 
                          HorizontalOptions="Center" 
-                         BackgroundColor="#FAFAFA" />
+                          />
             <ContentView Content="{Binding BarView}" 
                          IsVisible="{Binding ShowBar}" 
                          HorizontalOptions="Center" 
-                         BackgroundColor="#FAFAFA"/>
+                         />
         </VerticalStackLayout>
     </ScrollView>
 </pages:BasePage>

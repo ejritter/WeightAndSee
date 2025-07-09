@@ -83,10 +83,10 @@
 	  <MauiXaml Update="AppShell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Controls\BarPicker.xaml">
+	  <MauiXaml Update="Components\BarPicker.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Controls\PlatePicker.xaml">
+	  <MauiXaml Update="Components\PlatePicker.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\GeneralPopupPage.xaml">

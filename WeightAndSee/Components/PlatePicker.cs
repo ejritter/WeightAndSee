@@ -1,4 +1,4 @@
-﻿namespace WeightAndSee.Controls;
+﻿namespace WeightAndSee.Components;
 
 public partial class PlatePicker : ContentView
 {
