@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Padding="2" Margin="2" Spacing="5">
+            <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Padding="2" Margin="2" Spacing="15">
                 <controls:EntryLabelInfo  Text="Bar Type:"/>
                 <controls:BarTypeRadioControl  
                             Content="{x:Static models:BarTypes.Barbell}" 
@@ -45,17 +45,17 @@
                 </controls:BarTypeRadioControl>
             </HorizontalStackLayout>
 
-            <HorizontalStackLayout Grid.Row="1" Grid.Column="0">
+            <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="15">
                 <controls:EntryLabelInfo Text="Bar Weight:"/>
                 <controls:EntryTextInfo Text="{Binding BarWeightText, Mode=TwoWay}" />
             </HorizontalStackLayout>
 
-            <HorizontalStackLayout Grid.Row="2" Grid.Column="0">
+            <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Spacing="15">
                 <controls:EntryLabelInfo Text="Desired weight to lift:" />
                 <controls:EntryTextInfo Text="{Binding DesiredWeightText, Mode=TwoWay}" />
             </HorizontalStackLayout>
             <ImageButton Grid.Row="4" Grid.Column="0"
-                         Source="add_plate_icon.png"
+                         Source="{Binding ImageButtonIcon}"
                          Command="{Binding AddBarCommand}" />
         </Grid>
     </ScrollView>

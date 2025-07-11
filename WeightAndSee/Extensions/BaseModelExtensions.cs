@@ -47,7 +47,7 @@ public static class BaseModelExtensions
             if (((int)totalPlateWeightInPounds + bar.TotalWeightInPounds) <= weight &&
                     currentPlate.IsAvailable)
             {
-                bar.LeftPlates.Add(new KiloPlateModel(new WeightConversionService())
+                bar.LeftPlates.Add(new KiloPlateModel(currentPlate.WeightConversionService)
                 {
                     KiloGram = currentPlate.KiloGram,
                     KiloPlate = currentPlate.KiloPlate,
@@ -55,7 +55,7 @@ public static class BaseModelExtensions
                     PlateSize = currentPlate.PlateSize
                 });
 
-                bar.RightPlates.Add(new KiloPlateModel(new WeightConversionService())
+                bar.RightPlates.Add(new KiloPlateModel(currentPlate.WeightConversionService)
                 {
                     KiloGram = currentPlate.KiloGram,
                     KiloPlate = currentPlate.KiloPlate,

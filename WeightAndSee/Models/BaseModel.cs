@@ -2,7 +2,7 @@
 
 public abstract partial class BaseModel(IWeightConversionService weightConversionService) : ObservableObject
 {
-    protected readonly IWeightConversionService WeightConversionService = weightConversionService;
+    public readonly IWeightConversionService WeightConversionService = weightConversionService;
     [ObservableProperty]
     private double _barWeight; // Assumed to be in pounds
 

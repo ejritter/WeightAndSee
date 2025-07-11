@@ -71,7 +71,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Update="Resources\Images\add_plate_icon.svg">
+	  <MauiImage Update="Resources\Images\add_plate_light_icon.svg">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </MauiImage>
 	</ItemGroup>

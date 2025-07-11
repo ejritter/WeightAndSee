@@ -12,7 +12,6 @@ public partial class EntryLabelInfo : Label
         this.HorizontalOptions = LayoutOptions.Start;
         this.VerticalOptions = LayoutOptions.Start;
         this.FontSize = 22;
-        this.TextColor = Colors.LightSlateGray;
         this.FontAttributes = FontAttributes.Bold;
     }
 }

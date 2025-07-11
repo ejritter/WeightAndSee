@@ -11,7 +11,6 @@ public partial class EntryTextInfo : Entry
         this.HorizontalOptions = LayoutOptions.Center;
         this.Keyboard = Keyboard.Numeric;
         this.FontSize = 22;
-        this.TextColor = Colors.LightSlateGray;
-
+        
     }
 }

@@ -6,11 +6,13 @@
                 xmlns:components="clr-namespace:WeightAndSee.Components"
                 x:Class="WeightAndSee.Pages.MainPage"
                 x:TypeArguments="viewmodels:MainPageViewModel"
-                x:DataType="viewmodels:MainPageViewModel"
+                x:DataType="viewmodels:MainPageViewModel" 
                 >
     <ScrollView Margin="5" Padding="5">
         <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
-            <components:PlatePicker HorizontalOptions="Center"  />
+            <components:PlatePicker HorizontalOptions="Center" Plates="{Binding PlatesAvailableToYou}"
+                                    SetPlateStatusCommand="{Binding SetPlateStatusCommand}"
+                                    MaximumPlateHeight="{Binding MaximumPlateHeight}"/>
             <components:BarPicker HorizontalOptions="Center"  BindingContext="{Binding}" />
             <ContentView Content="{Binding BarReportView}" 
                          IsVisible="{Binding ShowReport}" 

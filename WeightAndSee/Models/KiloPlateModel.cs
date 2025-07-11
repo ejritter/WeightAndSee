@@ -1,12 +1,10 @@
-﻿using Microsoft.Maui.Controls.Shapes;
-
+﻿
 namespace WeightAndSee.Models;
 public partial class KiloPlateModel : BaseModel
 {
     public KiloPlateModel(IWeightConversionService weightConversionService) : base(weightConversionService)
     {
-        //LeftPlates.CollectionChanged += Plates_CollectionChanged;
-        //RightPlates.CollectionChanged += Plates_CollectionChanged;
+     
     }
 
     [ObservableProperty]
@@ -23,17 +21,18 @@ public partial class KiloPlateModel : BaseModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsNotAvailable))]
+    [NotifyPropertyChangedFor(nameof(PlateOpacity))]
     private bool _isAvailable = true;
 
     public bool IsNotAvailable => !IsAvailable;
 
-    // Add this computed property
-    public bool NeedsBorder => PlateColor == Colors.White || PlateColor == Colors.Yellow;
-
-    // Add this property for border color
+    public double PlateOpacity => IsAvailable ? 1.0 : 0.2;
+    
+    public bool NeedsBorder => App.Current.RequestedTheme == AppTheme.Light &&
+            PlateColor == Colors.White;
+    
     public Color BorderColor => Colors.Black;
 
-    // Add this property for visual contrast
     public Color ContrastColor => PlateColor == Colors.White || PlateColor == Colors.Yellow ? 
         Colors.Black : Colors.White;
 

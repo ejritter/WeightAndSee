@@ -11,11 +11,18 @@ public partial class MainPageViewModel : BaseViewModel
         _dumbbell = new DumbbellModel(base.WeightConversionService) { BarType = BarTypes.Dumbbell.ToString() };
             _dumbbell.LeftPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
             _dumbbell.RightPlates.CollectionChanged += ViewCreatorService.Plates_CollectionChanged;
-        
-        //BarTypesList.Add(barBell);
-        //BarTypesList.Add(dumbBell);
+       
+
+        ImageButtonIcon = Application.Current.RequestedTheme == AppTheme.Dark ?
+            "add_plate_dark_icon.png" : "add_plate_light_icon.png";
         LoadAllPlates();
     }
+
+    [ObservableProperty]
+    private string _imageButtonIcon;
+
+    [ObservableProperty]
+    private double _maximumPlateHeight;
 
     [ObservableProperty]
     private bool _isBarbellChecked = false;
@@ -131,6 +138,7 @@ public partial class MainPageViewModel : BaseViewModel
         BarReport = BarType.BarReport();
         BarReportView = BarType.BarReportView();
         ViewCreatorService.SetViewBar(BarType);
+        MaximumPlateHeight = BarType.LeftPlates.Max(p => p.PlateSize) + 10; // Add some padding
         BarView = ViewCreatorService.DisplayItem;
         new Entry().HideKeyboardAsync();
     }
@@ -154,13 +162,13 @@ public partial class MainPageViewModel : BaseViewModel
     [RelayCommand]
     private void SetBarType(object? sender)
     {
-        if (sender is string barType)
+        if (sender is BarTypes barType)
         {
-            if (barType == "Barbell")
+            if (barType == BarTypes.Barbell)
             {
                 BarType = Barbell;
             }
-            else if (barType == "Dumbbell")
+            else if (barType == BarTypes.Dumbbell)
             {
                 BarType = Dumbbell;
             }
@@ -170,6 +178,8 @@ public partial class MainPageViewModel : BaseViewModel
     [RelayCommand]
     private async Task SetPlateStatus(object? sender)
     {
+        //todo I think it's going through ALL the plates at once...
+        //but at least we mdade it back here. 
         if (sender is KiloPlateModel pm)
         {
             var toastMessage = "";

@@ -27,11 +27,11 @@ public static class KiloPlatesExtensions
     {
         if (plate.GetWeightInKg() > 9)
         {
-            return 50;
+            return Constants.largePlate;
         }
         else
         {
-            return 30;
+            return Constants.smallPlate;
         }
     }
     public static Color GetWeightColor(this KiloPlates plate)

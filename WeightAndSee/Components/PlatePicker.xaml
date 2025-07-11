@@ -1,80 +1,31 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:components="clr-namespace:WeightAndSee.Components"
+             xmlns:helpers="clr-namespace:WeightAndSee.Helpers"
+             xmlns:controls="clr-namespace:WeightAndSee.Controls"
+             xmlns:views="clr-namespace:WeightAndSee.Views"
              xmlns:models="clr-namespace:WeightAndSee.Models"
              x:Class="WeightAndSee.Components.PlatePicker"
-             x:Name="RootPlatePicker">
-    <ScrollView>
-        <VerticalStackLayout Spacing="4" Margin="4" Padding="4" HorizontalOptions="Center">
-            <Label Text="Plate Store." TextColor="Black" />
-            <HorizontalStackLayout Spacing="4" Margin="4" Padding="4">
-                <CollectionView SelectionMode="Single"
-                                ItemsSource="{Binding KiloPlateModels}"
-                                x:Name="PlateStoreCollectionView"
-                                HeightRequest="120"
-                                WidthRequest="400"
-                                HorizontalOptions="Center">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="4"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:KiloPlateModel">
-                            <Border StrokeShape="RoundRectangle 2"
-                                    Stroke="{Binding PlateColor}"
-                                    StrokeThickness="1"
-                                    Padding="2"
-                                    MinimumWidthRequest="20"
-                                    HorizontalOptions="Center">
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Command="{Binding Source={x:Reference PlateStoreCollectionView}, Path=BindingContext.SetPlateStatusCommand}"                                
-                                        CommandParameter="{Binding .}" />
-                                </Border.GestureRecognizers>
-                                <Border.Triggers>
-                                    <DataTrigger TargetType="Border" Binding="{Binding NeedsBorder}" Value="True">
-                                        <Setter Property="Stroke" Value="{Binding BorderColor}" />
-                                    </DataTrigger>
-                                </Border.Triggers>
-                                <Grid RowSpacing="2" VerticalOptions="Start">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
+             x:Name="this">
+    <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
+        <HorizontalStackLayout Spacing="15" Margin="5" Padding="5">
+            
+            
+            <controls:EntryLabelInfo Text="Plates:" VerticalOptions="Center"/>
 
-                                    <Border Grid.Row="0"
-                                            BackgroundColor="{Binding PlateColor}"
-                                            WidthRequest="8"
-                                            HeightRequest="{Binding PlateSize}"
-                                            HorizontalOptions="Center">
-                                        <Border.Triggers>
-                                            <DataTrigger TargetType="Border" Binding="{Binding NeedsBorder}" Value="True">
-                                                <Setter Property="Stroke" Value="{Binding BorderColor}" />
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Border" Binding="{Binding IsNotAvailable}" Value="True">
-                                                <Setter Property="Opacity" Value="0.2" />
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Border" Binding="{Binding IsAvailable}" Value="True">
-                                                <Setter Property="Opacity" Value="1" />
-                                            </DataTrigger>
-                                        </Border.Triggers>
-                                    </Border>
-                                    <Label Grid.Row="1"
-                                           Text="{Binding KiloGram}"
-                                           TextColor="{Binding PlateColor}"
-                                           HorizontalOptions="Center"
-                                           FontSize="12">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label" Binding="{Binding NeedsBorder}" Value="True">
-                                                <Setter Property="TextColor" Value="{Binding BorderColor}" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
-    </ScrollView>
+            <CollectionView x:Name="PlateStoreCollectionView"
+                            SelectionMode="Single"
+                            ItemsSource="{Binding Source={x:Reference this}, Path=Plates}"
+                            MaximumHeightRequest="{x:Static helpers:Constants.platesCollectionView}"
+                            WidthRequest="400"
+                            ItemTemplate="{views:AvailablePlatesView}"
+                            HorizontalOptions="Center">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="4"
+                                     HorizontalItemSpacing="4"
+                                     VerticalItemSpacing="4"/>
+                </CollectionView.ItemsLayout>
+            </CollectionView>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
 </ContentView>
