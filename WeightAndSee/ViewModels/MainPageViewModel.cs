@@ -58,18 +58,14 @@ public partial class MainPageViewModel : BaseViewModel
     [ObservableProperty]
     private ObservableCollection<KiloPlateModel> _platesAvailableToYou = new();
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(ShowReport))]
-    [NotifyPropertyChangedFor(nameof(ShowBar))]
-    private string _barReport = string.Empty;
-
-    private bool _canSubmit = false;
 
     [ObservableProperty]
-    private VerticalStackLayout _barReportView = new VerticalStackLayout();
-    public bool ShowReport => !string.IsNullOrEmpty(BarReport);
+    private ContentView _barReportView = new ContentView();
 
-    public bool ShowBar => !string.IsNullOrEmpty(BarReport);
+    [ObservableProperty]
+    public bool _showReport = false;
+
+    public bool ShowBar => ShowReport;
 
     private void LoadAllPlates()
     {
@@ -98,13 +94,10 @@ public partial class MainPageViewModel : BaseViewModel
         }
     }
 
-
-  
-
     [RelayCommand]
     private async void AddBar()
     {
-        BarReport = string.Empty;
+        ShowReport = false;
         if (BarWeightText == string.Empty)
         {
             _ = await ShowPopupAsync("Warning!", "Bar Weight cannot be blank", false);
@@ -131,16 +124,19 @@ public partial class MainPageViewModel : BaseViewModel
             return;
         }
 
+        //bar setup
         BarType.ResetBar();
         BarType.SetBarType();
         BarType.SetBarWeight(double.Parse(BarWeightText));
         BarType.AddPlatesToBar(double.Parse(DesiredWeightText), PlatesAvailableToYou);
-        BarReport = BarType.BarReport();
-        BarReportView = BarType.BarReportView();
         ViewCreatorService.SetViewBar(BarType);
+
+        //display 
+        BarReportView = ViewCreatorService.BarReportView(BarType);
         MaximumPlateHeight = BarType.LeftPlates.Max(p => p.PlateSize) + 10; // Add some padding
         BarView = ViewCreatorService.DisplayItem;
         new Entry().HideKeyboardAsync();
+        ShowReport = true;
     }
 
     [RelayCommand]

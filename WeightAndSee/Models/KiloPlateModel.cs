@@ -33,7 +33,7 @@ public partial class KiloPlateModel : BaseModel
     
     public Color BorderColor => Colors.Black;
 
-    public Color ContrastColor => PlateColor == Colors.White || PlateColor == Colors.Yellow ? 
+    public Color ContrastColor => PlateColor == Colors.White ? 
         Colors.Black : Colors.White;
 
     public ImageSource PlateImageSource => 

@@ -9,54 +9,61 @@
              x:DataType="viewmodels:MainPageViewModel"
              x:Name="MainPageContent">
     <ScrollView>
-        <Grid RowSpacing="6" ColumnSpacing="6" Padding="10" Margin="10" VerticalOptions="Start" HorizontalOptions="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" /> <!--Row for bar type -->
-                <RowDefinition Height="80"/> <!-- Row for radio buttons -->
-                <RowDefinition Height="80" /><!-- Row for for Bar weight entry -->
-                <RowDefinition Height="80" /><!-- Row for desired bar weight entry -->
-                <RowDefinition Height="260" /><!-- Row for SVG icon -->
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <Border Stroke="{AppThemeBinding Light={StaticResource LightThemeStroke}, Dark={StaticResource DarkThemeStroke}}">
+            <Grid RowSpacing="6" ColumnSpacing="6" Padding="10" Margin="10" VerticalOptions="Start" HorizontalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <!--Row for bar type -->
+                    <RowDefinition Height="80"/>
+                    <!-- Row for radio buttons -->
+                    <RowDefinition Height="80" />
+                    <!-- Row for for Bar weight entry -->
+                    <RowDefinition Height="80" />
+                    <!-- Row for desired bar weight entry -->
+                    <RowDefinition Height="260" />
+                    <!-- Row for SVG icon -->
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Padding="2" Margin="2" Spacing="15">
-                <controls:EntryLabelInfo  Text="Bar Type:"/>
-                <controls:BarTypeRadioControl  
+                <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Padding="2" Margin="2" Spacing="15">
+                    <controls:EntryLabelInfo  Text="Bar Type:"/>
+                    <controls:BarTypeRadioControl  
                             Content="{x:Static models:BarTypes.Barbell}" 
                             IsChecked="{Binding IsBarbellChecked, Mode=TwoWay}">
-                    <controls:BarTypeRadioControl.Behaviors>
-                        <toolkit:EventToCommandBehavior 
+                        <controls:BarTypeRadioControl.Behaviors>
+                            <toolkit:EventToCommandBehavior 
                                     EventName="CheckedChanged"
                                     Command="{Binding BindingContext.SetBarTypeCommand, Source={x:Reference MainPageContent}}"
                                     CommandParameter="{x:Static models:BarTypes.Barbell}"/>
-                    </controls:BarTypeRadioControl.Behaviors>
-                </controls:BarTypeRadioControl>
-                <controls:BarTypeRadioControl
+                        </controls:BarTypeRadioControl.Behaviors>
+                    </controls:BarTypeRadioControl>
+                    <controls:BarTypeRadioControl
                             Content="{x:Static models:BarTypes.Dumbbell}"
                             IsChecked="{Binding IsDumbbellChecked, Mode=TwoWay}">
-                    <controls:BarTypeRadioControl.Behaviors>
-                        <toolkit:EventToCommandBehavior 
+                        <controls:BarTypeRadioControl.Behaviors>
+                            <toolkit:EventToCommandBehavior 
                                     EventName="CheckedChanged"
                                     Command="{Binding BindingContext.SetBarTypeCommand, Source={x:Reference MainPageContent}}"
                                     CommandParameter="{x:Static models:BarTypes.Dumbbell}"/>
-                    </controls:BarTypeRadioControl.Behaviors>
-                </controls:BarTypeRadioControl>
-            </HorizontalStackLayout>
+                        </controls:BarTypeRadioControl.Behaviors>
+                    </controls:BarTypeRadioControl>
+                </HorizontalStackLayout>
 
-            <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="15">
-                <controls:EntryLabelInfo Text="Bar Weight:"/>
-                <controls:EntryTextInfo Text="{Binding BarWeightText, Mode=TwoWay}" />
-            </HorizontalStackLayout>
+                <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="15">
+                    <controls:EntryLabelInfo Text="Bar Weight:"/>
+                    <controls:EntryTextInfo Text="{Binding BarWeightText, Mode=TwoWay}" />
+                </HorizontalStackLayout>
 
-            <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Spacing="15">
-                <controls:EntryLabelInfo Text="Desired weight to lift:" />
-                <controls:EntryTextInfo Text="{Binding DesiredWeightText, Mode=TwoWay}" />
-            </HorizontalStackLayout>
-            <ImageButton Grid.Row="4" Grid.Column="0"
+                <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Spacing="15">
+                    <controls:EntryLabelInfo Text="Desired weight to lift:" />
+                    <controls:EntryTextInfo Text="{Binding DesiredWeightText, Mode=TwoWay}" />
+                </HorizontalStackLayout>
+                <ImageButton Grid.Row="4" Grid.Column="0"
                          Source="{Binding ImageButtonIcon}"
                          Command="{Binding AddBarCommand}" />
-        </Grid>
+            </Grid>
+        </Border>
     </ScrollView>
 </ContentView>

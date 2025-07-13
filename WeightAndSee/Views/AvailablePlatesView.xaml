@@ -4,7 +4,7 @@
               xmlns:components="clr-namespace:WeightAndSee.Components"
               x:Class="WeightAndSee.Views.AvailablePlatesView"
               x:DataType="models:KiloPlateModel">
-    <Grid RowDefinitions="*" ColumnDefinitions="*" Padding="5">
+    <Grid RowDefinitions="*" ColumnDefinitions="*" Padding="5" ColumnSpacing="20">
         <Grid.GestureRecognizers>
             <TapGestureRecognizer
                 Command="{Binding Source={RelativeSource AncestorType={x:Type components:PlatePicker}}, Path=SetPlateStatusCommand}"

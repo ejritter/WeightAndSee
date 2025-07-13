@@ -8,7 +8,7 @@ public interface IViewCreatorService
     
     View CreateDisplayContent();
 
-    View CreatePlateView(KiloPlateModel plate);
+    View CreatePlateOnBarView(KiloPlateModel plate);
      //ContentView _displayView {get; set;}
 
     ContentView DisplayItem { get; }
@@ -19,6 +19,10 @@ public interface IViewCreatorService
     void RefreshDisplay();
 
     void Plates_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e);
+
+    ContentView BarReportView(BaseModel bar);
+
+    Image CreateSinglePlateView(KiloPlateModel plate);
 
     //public Line BarLine { get; }
 

@@ -14,14 +14,19 @@
                                     SetPlateStatusCommand="{Binding SetPlateStatusCommand}"
                                     MaximumPlateHeight="{Binding MaximumPlateHeight}"/>
             <components:BarPicker HorizontalOptions="Center"  BindingContext="{Binding}" />
-            <ContentView Content="{Binding BarReportView}" 
+            <components:BarReport BindingContext="{Binding}"
+                                  BarReportView="{Binding BarReportView}" 
+                                  BarView="{Binding BarView}"
+                                  IsVisible="{Binding ShowReport}" />
+
+            <!--<ContentView Content="{Binding BarReportView}" 
                          IsVisible="{Binding ShowReport}" 
                          HorizontalOptions="Center" 
                           />
             <ContentView Content="{Binding BarView}" 
                          IsVisible="{Binding ShowBar}" 
                          HorizontalOptions="Center" 
-                         />
+                         />-->
         </VerticalStackLayout>
     </ScrollView>
 </pages:BasePage>
