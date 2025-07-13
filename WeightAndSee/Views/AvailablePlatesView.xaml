@@ -11,13 +11,22 @@
                 CommandParameter="{Binding .}" />
         </Grid.GestureRecognizers>
         <VerticalStackLayout Grid.Row="0" Grid.Column="0" >
-            <Ellipse
+            <!--<Ellipse
                     Fill="{Binding PlateColor}"
                     WidthRequest="{Binding PlateSize}"
                     HeightRequest="{Binding PlateSize}"
                     Opacity="{Binding PlateOpacity}"
                     HorizontalOptions="Center"
-                    VerticalOptions="Center" />
+                    VerticalOptions="Center" />-->
+
+            <Image
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="{Binding PlateSize}"
+                HeightRequest="{Binding PlateSize}"
+                Opacity="{Binding PlateOpacity}"
+                Source="{Binding PlateImageSource}"
+                />
 
             <Label Text="{Binding KiloGram}" TextColor="{Binding PlateColor}"/>
         </VerticalStackLayout>

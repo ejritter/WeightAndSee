@@ -11,7 +11,7 @@ public abstract partial class BaseViewModel(IPopupService popupService, IWeightC
     protected readonly IViewCreatorService ViewCreatorService = viewCreatorService;
     protected readonly IToastService ToastService = toaster;
 
-    public async Task<bool> ShowPopupAsync(string title, string message, bool isDismissable)
+    public async Task<bool> ShowPopupAsync(string title, string message, bool isDismissable = true)
     {
         var queryAttributes = new Dictionary<string, object>
         {

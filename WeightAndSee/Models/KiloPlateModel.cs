@@ -28,7 +28,7 @@ public partial class KiloPlateModel : BaseModel
 
     public double PlateOpacity => IsAvailable ? 1.0 : 0.2;
     
-    public bool NeedsBorder => App.Current.RequestedTheme == AppTheme.Light &&
+    public bool NeedsBorder => CurrentTheme == AppTheme.Light &&
             PlateColor == Colors.White;
     
     public Color BorderColor => Colors.Black;
@@ -36,5 +36,6 @@ public partial class KiloPlateModel : BaseModel
     public Color ContrastColor => PlateColor == Colors.White || PlateColor == Colors.Yellow ? 
         Colors.Black : Colors.White;
 
-
+    public ImageSource PlateImageSource => 
+        ImageSource.FromFile($"{KiloPlate.ToLower()}_{CurrentTheme.ToString().ToLower()}.png");
 }

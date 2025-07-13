@@ -6,6 +6,8 @@ public abstract partial class BaseModel(IWeightConversionService weightConversio
     [ObservableProperty]
     private double _barWeight; // Assumed to be in pounds
 
+    public readonly AppTheme CurrentTheme = App.Current.RequestedTheme;
+
     [ObservableProperty]
     private ObservableCollection<KiloPlateModel> _leftPlates = new();
 

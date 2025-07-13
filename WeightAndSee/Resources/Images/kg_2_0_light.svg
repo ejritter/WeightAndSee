@@ -1,0 +1,27 @@
+<svg width="215" height="300" viewBox="-10 -10 218 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="plateGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C0C0C0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A0A0A0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="100" cy="100" r="105" fill="url(#plateGradient)" stroke="#A0A0A0" stroke-width="4"/>
+
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="2"/>
+
+  <circle cx="100" cy="100" r="30" fill="#333333" stroke="#111111" stroke-width="2"/>
+
+  <text x="100" y="55" font-family="Inter, sans-serif" font-size="32" font-weight="bold" fill="#000000" text-anchor="middle" dominant-baseline="middle">
+    2KG
+  </text>
+
+  <text x="100" y="102" font-family="Inter, sans-serif" font-size="16" fill="#D0D0D0" text-anchor="middle" dominant-baseline="middle">
+    W.A.S
+  </text>
+
+  <text x="100" y="150" font-family="Inter, sans-serif" font-size="24" fill="#000000" text-anchor="middle" dominant-baseline="middle">
+    4.4LBS
+  </text>
+
+  </svg>

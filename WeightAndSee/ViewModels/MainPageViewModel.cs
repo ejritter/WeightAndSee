@@ -79,7 +79,7 @@ public partial class MainPageViewModel : BaseViewModel
                                    .Cast<KiloPlates>()
                                    .Select(plate =>
                                    {
-                                       var kpModel = new KiloPlateModel(new WeightConversionService())
+                                       var kpModel = new KiloPlateModel(WeightConversionService)
                                        {
                                            KiloPlate = plate.ToString(),
                                            KiloGram = plate.GetWeightInKg(),
@@ -173,6 +173,12 @@ public partial class MainPageViewModel : BaseViewModel
                 BarType = Dumbbell;
             }
         }
+    }
+
+    [RelayCommand]
+    private void My()
+    {
+
     }
 
     [RelayCommand]
