@@ -15,6 +15,8 @@ public interface IViewCreatorService
 
     ContentView CreateItemForDisplay();
     void ResetBarDisplay();
+    
+    void SetViewBar(BaseModel bar);
 
     void RefreshDisplay();
 

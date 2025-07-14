@@ -17,6 +17,15 @@ public class ViewCreatorService : IViewCreatorService
         Bar = null;
     }
 
+    public void SetViewBar(BaseModel bar)
+    {
+        Bar = bar;
+        if (_displayView != null)
+        {
+            _displayView.Content = CreateDisplayContent();
+        }
+    }
+
     public void RefreshDisplay()
     {
         if (_displayView != null)

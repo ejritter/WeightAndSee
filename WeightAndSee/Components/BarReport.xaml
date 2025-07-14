@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WeightAndSee.Components.BarReport" 
              x:Name="This" >
-    <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
-        <ContentView Content="{Binding BarReportView, Source={x:Reference This}}" 
+    <Border  Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+        <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
+            <ContentView Content="{Binding BarReportView, Source={x:Reference This}}" 
                          HorizontalOptions="Center" 
                           />
-        <ContentView Content="{Binding BarView, Source={x:Reference This}}" 
+            <ContentView Content="{Binding BarView, Source={x:Reference This}}" 
                          HorizontalOptions="Center" 
                          />
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Border>
 </ContentView>

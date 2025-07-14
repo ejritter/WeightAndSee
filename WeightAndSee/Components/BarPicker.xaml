@@ -9,7 +9,7 @@
              x:DataType="viewmodels:MainPageViewModel"
              x:Name="MainPageContent">
     <ScrollView>
-        <Border Stroke="{AppThemeBinding Light={StaticResource LightThemeStroke}, Dark={StaticResource DarkThemeStroke}}">
+        <Border  Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
             <Grid RowSpacing="6" ColumnSpacing="6" Padding="10" Margin="10" VerticalOptions="Start" HorizontalOptions="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50" />
@@ -52,12 +52,12 @@
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="15">
-                    <controls:EntryLabelInfo Text="Bar Weight:"/>
+                    <controls:EntryLabelInfo WidthRequest="200" HorizontalOptions="Start" Text="Bar Weight:"/>
                     <controls:EntryTextInfo Text="{Binding BarWeightText, Mode=TwoWay}" />
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Spacing="15">
-                    <controls:EntryLabelInfo Text="Desired weight to lift:" />
+                    <controls:EntryLabelInfo WidthRequest="200" HorizontalOptions="Start" Text="Desired weight to lift:" />
                     <controls:EntryTextInfo Text="{Binding DesiredWeightText, Mode=TwoWay}" />
                 </HorizontalStackLayout>
                 <ImageButton Grid.Row="4" Grid.Column="0"

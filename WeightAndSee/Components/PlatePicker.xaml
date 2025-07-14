@@ -8,7 +8,7 @@
              x:Class="WeightAndSee.Components.PlatePicker"
              x:Name="this">
     <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
-        <Border  Stroke="{AppThemeBinding Light={StaticResource LightThemeStroke}, Dark={StaticResource DarkThemeStroke}}">
+        <Border  Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
             <HorizontalStackLayout Spacing="15" Margin="5" Padding="5">
 
 

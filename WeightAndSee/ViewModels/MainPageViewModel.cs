@@ -46,6 +46,7 @@ public partial class MainPageViewModel : BaseViewModel
     private ObservableCollection<object> _selectedPlates = new();
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowReport))]
     private BaseModel _barType = null;
 
     [ObservableProperty]
@@ -125,6 +126,7 @@ public partial class MainPageViewModel : BaseViewModel
         }
 
         //bar setup
+        ViewCreatorService.ResetBarDisplay();
         BarType.ResetBar();
         BarType.SetBarType();
         BarType.SetBarWeight(double.Parse(BarWeightText));
@@ -139,25 +141,11 @@ public partial class MainPageViewModel : BaseViewModel
         ShowReport = true;
     }
 
-    [RelayCommand]
-    private void PickerSet(object? sender)
-    {
-        if (sender is Picker picker &&
-                picker.SelectedItem is BaseModel bt)
-        {
-            BarType = bt;
-            DesiredWeightText = string.Empty;
-            BarWeightText = string.Empty;
-        }
-        else
-        {
-            BarType = null;
-        }
-    }
 
     [RelayCommand]
     private void SetBarType(object? sender)
     {
+       
         if (sender is BarTypes barType)
         {
             if (barType == BarTypes.Barbell)
@@ -172,16 +160,8 @@ public partial class MainPageViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void My()
-    {
-
-    }
-
-    [RelayCommand]
     private async Task SetPlateStatus(object? sender)
     {
-        //todo I think it's going through ALL the plates at once...
-        //but at least we mdade it back here. 
         if (sender is KiloPlateModel pm)
         {
             var toastMessage = "";
