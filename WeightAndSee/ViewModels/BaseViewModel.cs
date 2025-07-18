@@ -1,7 +1,7 @@
 ﻿
 namespace WeightAndSee.ViewModels;
 
-public abstract partial class BaseViewModel(IPopupService popupService, IWeightConversionService weightConversionService, 
+public abstract partial class BaseViewModel(IPopupService popupService, IWeightConversionService weightConversionService,
                                             IViewCreatorService viewCreatorService, IToastService toaster) : ObservableObject
 {
 
@@ -10,7 +10,7 @@ public abstract partial class BaseViewModel(IPopupService popupService, IWeightC
     protected readonly IWeightConversionService WeightConversionService = weightConversionService;
     protected readonly IViewCreatorService ViewCreatorService = viewCreatorService;
     protected readonly IToastService ToastService = toaster;
-
+    public AppTheme CurrentTheme = App.Current.RequestedTheme;
     public async Task<bool> ShowPopupAsync(string title, string message, bool isDismissable = true)
     {
         var queryAttributes = new Dictionary<string, object>
@@ -19,16 +19,21 @@ public abstract partial class BaseViewModel(IPopupService popupService, IWeightC
             [nameof(BasePopupViewModel.Message)] = message
         };
 
-        var results = await this.PopupService.ShowPopupAsync<GeneralPopupViewModel>(
-                shell: Shell.Current,
-                options: new PopupOptions { CanBeDismissedByTappingOutsideOfPopup = isDismissable },
-                shellParameters: queryAttributes);
-       if (results is not null &&
-                results is IPopupResult<bool> userResults)
+        var results = await this.PopupService
+                                .ShowPopupAsync<GeneralPopupViewModel>(
+                                                                        shell: Shell.Current,
+                                                                        options: new PopupOptions
+                                                                        {
+                                                                            CanBeDismissedByTappingOutsideOfPopup = isDismissable,
+                                                                            PageOverlayColor = CurrentTheme == AppTheme.Light ? Colors.White : Colors.Black,
+                                                                        },
+                                                                        shellParameters: queryAttributes);
+        if (results is not null &&
+                 results is IPopupResult<bool> userResults)
         {
             return userResults.Result;
         }
-       else
+        else
         {
             return false;
         }

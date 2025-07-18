@@ -83,6 +83,7 @@ public partial class MainPageViewModel : BaseViewModel
                                            PlateColor = plate.GetWeightColor(),
                                            PlateSize = plate.GetPlateSize()
                                        };
+                                       kpModel.IsAvailable = Preferences.Get(key: kpModel.KiloPlate, defaultValue: true);
                                        return kpModel;
                                    })
                                    .OrderByDescending(kp => kp.KiloGram)
@@ -165,18 +166,9 @@ public partial class MainPageViewModel : BaseViewModel
         if (sender is KiloPlateModel pm)
         {
             var toastMessage = "";
-            if (pm.IsAvailable)
-            {
-                pm.IsAvailable = false;
-            }
-            else
-            {
-                pm.IsAvailable = true;
-            }
-            toastMessage = 
-                    pm.IsAvailable == true ? 
-                    "Plate available." : "Plate unavailable";
-
+            pm.IsAvailable = !pm.IsAvailable;
+            Preferences.Set(key: pm.KiloPlate, value: pm.IsAvailable);
+            toastMessage = pm.IsAvailable ? "Plate Available" : "Plate Unavailable";
             await ToastService.ShowToastAsync(message: toastMessage);
         }
     }

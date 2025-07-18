@@ -6,7 +6,9 @@ public abstract partial class BaseModel(IWeightConversionService weightConversio
     [ObservableProperty]
     private double _barWeight; // Assumed to be in pounds
 
-    public readonly AppTheme CurrentTheme = App.Current.RequestedTheme;
+    //public  AppTheme CurrentTheme = App.Current.RequestedTheme;
+    [ObservableProperty]
+    private AppTheme _currentTheme = App.Current.RequestedTheme;
 
     [ObservableProperty]
     private ObservableCollection<KiloPlateModel> _leftPlates = new();
@@ -16,18 +18,9 @@ public abstract partial class BaseModel(IWeightConversionService weightConversio
 
     [ObservableProperty]
     private string _barType = string.Empty;
-
     public int TotalWeightInPounds => WeightConversionService.KilogramToPound(this);
-
     public double TotalWeightInKilograms => WeightConversionService.PoundToKilogram(this);
-
-   // public int PlateSpacing = 22; // Spacing between plates (negative for overlap)
-    public int PlateWidth = 20; // Make plates thin to match new visual
-            // Add left plates with overlap (right to left)
-   // public int LeftOffset = 50; // Distance from center to first plate
-            // Add right plates with overlap (left to right)
-   // public int RightOffset = 50; // Distance from center to first plate
-
+    public int PlateWidth = 20; // Make plates thin to match new 
     public int PlateViewTranslationY = 12;// little plates need to be shifted down to center on bar.
 
     public Line BarLine { get; set; } = new Line()
@@ -41,5 +34,13 @@ public abstract partial class BaseModel(IWeightConversionService weightConversio
         VerticalOptions = LayoutOptions.Center,
         TranslationY = 0
     };
+
+    partial void OnCurrentThemeChanged(AppTheme value)
+    {
+        foreach (var plate in LeftPlates.Concat(RightPlates))
+        {
+            plate.ThemeChanged();
+        }
+    }
 
 }

@@ -7,27 +7,29 @@
              xmlns:models="clr-namespace:WeightAndSee.Models"
              x:Class="WeightAndSee.Components.PlatePicker"
              x:Name="this">
-    <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
-        <Border  Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
-            <HorizontalStackLayout Spacing="15" Margin="5" Padding="5">
-
-
-                <controls:EntryLabelInfo Text="Plates:" VerticalOptions="Center"/>
-
-                <CollectionView x:Name="PlateStoreCollectionView"
+    <ScrollView>
+        <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
+            <Border  Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}">
+                <VerticalStackLayout Spacing="5" Margin="5" Padding="5">
+                    
+                    <controls:EntryLabelInfo Text="Plates:" 
+                                             VerticalOptions="Center"/>
+                    
+                    <CollectionView x:Name="PlateStoreCollectionView"
                             SelectionMode="Single"
                             ItemsSource="{Binding Source={x:Reference this}, Path=Plates}"
-                            MaximumHeightRequest="{x:Static helpers:Constants.platesCollectionView}"
-                            WidthRequest="400"
+                            HeightRequest="{x:Static helpers:Constants.platesCollectionViewHeight}"
+                            WidthRequest="{x:Static helpers:Constants.platesCollectionViewWidth}"
                             ItemTemplate="{views:AvailablePlatesView}"
                             HorizontalOptions="Center">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="4"
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="4"
                                      HorizontalItemSpacing="4"
-                                     VerticalItemSpacing="4"/>
-                    </CollectionView.ItemsLayout>
-                </CollectionView>
-            </HorizontalStackLayout>
-        </Border>
-    </VerticalStackLayout>
+                                     />
+                        </CollectionView.ItemsLayout>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentView>

@@ -164,9 +164,9 @@ public class ViewCreatorService : IViewCreatorService
                 {
                      Spans =
                      {
-                         new Span { Text = $"\t{plateCount}", TextColor = plate.PlateColor},
+                         new Span { Text = $"\t{plateCount}", TextColor = plate.PlateTextColor},
                          new Span { Text = " of " },
-                         new Span { Text = $"{plate.KiloGram}.", TextColor = plate.PlateColor}
+                         new Span { Text = $"{plate.KiloGram}.", TextColor = plate.PlateTextColor}
                      }
                 }
             };
@@ -237,7 +237,7 @@ public class ViewCreatorService : IViewCreatorService
         var weightLabel = new Label
         {
             Text = plate.KiloGram.ToString(),
-            TextColor = plate.NeedsBorder ? plate.BorderColor : plate.PlateColor,
+            TextColor = plate.PlateTextColor,
             HorizontalOptions = LayoutOptions.Center,
             FontSize = 12,
             Margin = new Thickness(0, 6, 0, 0)

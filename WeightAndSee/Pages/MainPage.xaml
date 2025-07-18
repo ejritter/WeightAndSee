@@ -18,15 +18,6 @@
                                   BarReportView="{Binding BarReportView}" 
                                   BarView="{Binding BarView}"
                                   IsVisible="{Binding ShowReport}" />
-
-            <!--<ContentView Content="{Binding BarReportView}" 
-                         IsVisible="{Binding ShowReport}" 
-                         HorizontalOptions="Center" 
-                          />
-            <ContentView Content="{Binding BarView}" 
-                         IsVisible="{Binding ShowBar}" 
-                         HorizontalOptions="Center" 
-                         />-->
         </VerticalStackLayout>
     </ScrollView>
 </pages:BasePage>

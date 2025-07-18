@@ -4,7 +4,7 @@ public partial class KiloPlateModel : BaseModel
 {
     public KiloPlateModel(IWeightConversionService weightConversionService) : base(weightConversionService)
     {
-     
+        PlateTextColor = GetPlateTextColor();
     }
 
     [ObservableProperty]
@@ -27,15 +27,40 @@ public partial class KiloPlateModel : BaseModel
     public bool IsNotAvailable => !IsAvailable;
 
     public double PlateOpacity => IsAvailable ? 1.0 : 0.2;
-    
+
     public bool NeedsBorder => CurrentTheme == AppTheme.Light &&
             PlateColor == Colors.White;
-    
+
     public Color BorderColor => Colors.Black;
 
-    public Color ContrastColor => PlateColor == Colors.White ? 
-        Colors.Black : Colors.White;
 
-    public ImageSource PlateImageSource => 
+    public Color PlateTextColor
+    {
+        get => _plateTextColor;
+        set => _plateTextColor = GetPlateTextColor();
+    }
+
+    private Color _plateTextColor;
+
+    private Color GetPlateTextColor()
+    {
+        if (CurrentTheme == AppTheme.Dark && PlateColor == Colors.Black)
+        {
+            return Colors.White;
+        }
+        if (CurrentTheme == AppTheme.Light && PlateColor == Colors.White)
+        {
+            return Colors.Black;
+        }
+
+        return PlateColor;
+    }
+
+    public void ThemeChanged()
+    {
+        OnPropertyChanged(nameof(PlateTextColor));
+    }
+
+    public ImageSource PlateImageSource =>
         ImageSource.FromFile($"{KiloPlate.ToLower()}_{CurrentTheme.ToString().ToLower()}.png");
 }

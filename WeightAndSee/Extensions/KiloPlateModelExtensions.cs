@@ -4,7 +4,7 @@ public static class KiloPlateModelExtensions
 {
     public static KiloPlateModel ClonePlate(this KiloPlateModel kp)
     {
-        var output = new KiloPlateModel(new WeightConversionService())
+        var output = new KiloPlateModel(kp.WeightConversionService)
         {
             KiloGram = kp.KiloGram,
             KiloPlate = kp.KiloPlate,

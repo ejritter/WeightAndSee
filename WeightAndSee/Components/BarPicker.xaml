@@ -62,7 +62,8 @@
                 </HorizontalStackLayout>
                 <ImageButton Grid.Row="4" Grid.Column="0"
                          Source="{Binding ImageButtonIcon}"
-                         Command="{Binding AddBarCommand}" />
+                         Command="{Binding AddBarCommand}"
+                         Aspect="AspectFit"/>
             </Grid>
         </Border>
     </ScrollView>

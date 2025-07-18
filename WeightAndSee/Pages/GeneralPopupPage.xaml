@@ -3,13 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="clr-namespace:WeightAndSee.Pages"
              xmlns:viewmodels="clr-namespace:WeightAndSee.ViewModels"
+             xmlns:controls="clr-namespace:WeightAndSee.Controls"
              xmlns:views="clr-namespace:WeightAndSee.Views"
              x:DataType="viewmodels:GeneralPopupViewModel"
              x:TypeArguments="viewmodels:GeneralPopupViewModel"
-             x:Class="WeightAndSee.Pages.GeneralPopupPage">
+             x:Class="WeightAndSee.Pages.GeneralPopupPage"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"        
+             >
     <VerticalStackLayout Margin="5" Spacing="5" Padding="5">
-        <Label Text="{Binding Title}" TextColor="LightSlateGray" />
-        <Label Text="{Binding Message}" TextColor="DarkGrey"/>
+        <controls:EntryLabelInfo Text="{Binding Title}" />
+        <controls:EntryLabelInfo Text="{Binding Message}"/>
 
         <Button Text="Okay" Command="{Binding OkayClickedCommand}"  />
         <Button Text="Cancel" Command="{Binding CancelClickedCommand}" />

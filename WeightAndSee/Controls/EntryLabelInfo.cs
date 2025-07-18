@@ -8,7 +8,6 @@ public partial class EntryLabelInfo : Label
 
     private void InitializeControl()
     {
-        // Set default properties for the label
         this.HorizontalOptions = LayoutOptions.Start;
         this.VerticalOptions = LayoutOptions.Start;
         this.FontSize = 22;

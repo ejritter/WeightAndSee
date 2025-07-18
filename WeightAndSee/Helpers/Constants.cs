@@ -7,5 +7,6 @@ public static class Constants
     public const double largePlate = 150;
     public const double smallPlate = 75;
 
-    public const double platesCollectionView = 400;
+    public const double platesCollectionViewHeight = 400;
+    public const double platesCollectionViewWidth = 450;
 }

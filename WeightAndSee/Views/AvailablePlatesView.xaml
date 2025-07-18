@@ -2,23 +2,16 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:models="clr-namespace:WeightAndSee.Models"
               xmlns:components="clr-namespace:WeightAndSee.Components"
+              xmlns:controls="clr-namespace:WeightAndSee.Controls"
               x:Class="WeightAndSee.Views.AvailablePlatesView"
               x:DataType="models:KiloPlateModel">
-    <Grid RowDefinitions="*" ColumnDefinitions="*" Padding="5" ColumnSpacing="20">
+    <Grid RowDefinitions="Auto" ColumnDefinitions="*" Padding="5" >
         <Grid.GestureRecognizers>
             <TapGestureRecognizer
                 Command="{Binding Source={RelativeSource AncestorType={x:Type components:PlatePicker}}, Path=SetPlateStatusCommand}"
                 CommandParameter="{Binding .}" />
         </Grid.GestureRecognizers>
         <VerticalStackLayout Grid.Row="0" Grid.Column="0" >
-            <!--<Ellipse
-                    Fill="{Binding PlateColor}"
-                    WidthRequest="{Binding PlateSize}"
-                    HeightRequest="{Binding PlateSize}"
-                    Opacity="{Binding PlateOpacity}"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center" />-->
-
             <Image
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
@@ -28,7 +21,9 @@
                 Source="{Binding PlateImageSource}"
                 />
 
-            <Label Text="{Binding KiloGram}" TextColor="{Binding PlateColor}"/>
+            <controls:EntryLabelInfo Text="{Binding KiloGram}" 
+                                     TextColor="{Binding PlateTextColor}"
+                                     HorizontalOptions="Center"/>
         </VerticalStackLayout>
     </Grid>
 </DataTemplate>
